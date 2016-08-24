@@ -1,5 +1,5 @@
 ﻿# Set project name
-project (Urho3DStatesEngine)
+project (StatesEngine)
 ######################################
 # Set minimum version
 cmake_minimum_required (VERSION 2.8.6)
@@ -16,6 +16,7 @@ if (COMMAND cmake_policy)
         cmake_policy (SET CMP0042 NEW)
     endif ()
 endif ()
+enable_testing ()
 # Set CMake modules search path
 set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
 # Include Urho3D Cmake common module

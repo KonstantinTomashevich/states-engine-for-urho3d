@@ -1,1 +1,7 @@
-﻿
+﻿set (TARGET_NAME TestStatesEngineCXX)
+set (H_FILES TestStatesEngineCXX.hpp)
+set (CPP_FILES TestStatesEngineCXX.cpp)
+set (SOURCE_FILES ${H_FILES} ${CPP_FILES})
+setup_main_executable ()
+target_link_libraries (TestStatesEngineCXX StatesEngine)
+add_test (NAME TestStatesEngineCXX_Test COMMAND TestStatesEngineCXX)
