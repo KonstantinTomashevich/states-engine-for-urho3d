@@ -4,11 +4,11 @@ See more in wiki and check our samples.
 
 ### Links ###
 
-* [Samples.](https://bitbucket.org/Electronic_KITech/samples-for-states-engine-for-urho3d)
-* [Wiki.](https://bitbucket.org/Electronic_KITech/states-engine-for-urho3d/wiki/Home)
-* [Issue tracker.](https://bitbucket.org/Electronic_KITech/states-engine-for-urho3d/issues)
+*Samples and wiki will be added soon.*
+
+* [Urho3D repository.] (https://github.com/Urho3D/Urho3D)
 * [Urho3D site.](http://urho3d.github.io/)
 
 ### Authors ###
 
-* [Konstantin Tomashevich.](https://bitbucket.org/Electronic_KITech/)
+* [Konstantin Tomashevich.](https://github.com/KonstantinTomashevich/)
