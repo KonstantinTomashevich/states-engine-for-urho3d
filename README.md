@@ -1,6 +1,6 @@
 ### States Engine For Urho3D
-This is small engine for easier game creating on Urho3D Engine.
-See more in wiki and check our samples.
+This is small engine for easier game creation on Urho3D Engine.
+See more in wiki and check our sample.
 
 ### Links
 
