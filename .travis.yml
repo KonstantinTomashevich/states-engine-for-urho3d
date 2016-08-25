@@ -8,6 +8,7 @@ before_script:
 - tar -xvf /tmp/Urho3D.tar.gz
 - export URHO3D_HOME=$PWD/tmp/Urho3D/Urho3D-1.6-Linux-64bit-SHARED/usr/local
 - echo $URHO3D_HOME
+- mv /tmp/Urho3D/Urho3D-1.6-Linux-64bit-SHARED/usr/local/* -f /
 script:
 - mkdir build 
 - cd build 
