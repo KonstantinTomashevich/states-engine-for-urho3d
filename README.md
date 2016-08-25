@@ -4,8 +4,9 @@ See more in wiki and check our samples.
 
 ### Links ###
 
-*Samples and wiki will be added soon.*
+*Wiki will be added soon.*
 
+* [Sample platformer.] (https://github.com/KonstantinTomashevich/states-engine-sample-platformer)
 * [Urho3D repository.] (https://github.com/Urho3D/Urho3D)
 * [Urho3D site.](http://urho3d.github.io/)
 
