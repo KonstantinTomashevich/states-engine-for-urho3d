@@ -5,10 +5,9 @@ sudo: required
 before_script:
 - wget http://downloads.sourceforge.net/project/urho3d/Urho3D/1.6/Urho3D-1.6-Linux-64bit-SHARED.tar.gz -O /tmp/Urho3D.tar.gz
 - tar -xvf /tmp/Urho3D.tar.gz
-- export URHO3D_HOME=/tmp/Urho3D-1.6-Linux-64bit-SHARED/
 script:
 - mkdir build 
 - cd build 
-- cmake .. -DSTATES_ENGINE_ENABLE_TESTING=1
+- cmake .. -DSTATES_ENGINE_ENABLE_TESTING=1 -DURHO3D_HOME=/tmp/Urho3D-1.6-Linux-64bit-SHARED/
 - make 
 - make test
