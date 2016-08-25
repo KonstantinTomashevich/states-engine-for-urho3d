@@ -15,7 +15,7 @@ script:
 - cmake .. -DSTATES_ENGINE_ENABLE_TESTING=1
 - make 
 - make test
-after_failrule:
+after_failure:
 - cd Testing
 - cd Temporary
 - cat CTestCostData.txt
