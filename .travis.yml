@@ -2,8 +2,7 @@ language: cpp
 compiler: gcc
 dist: trusty
 before_script:
-- URHO3D_SOURCEOFRGE_BUILD="http://downloads.sourceforge.net/project/urho3d/Urho3D/1.6/Urho3D-1.6-Linux-64bit-SHARED.tar.gz?r=&ts=1472122378&use_mirror=netix"
-- wget $URHO3D_SOURCEFORGE_BUILD -O /tmp/Urho3D.tar.gz
+- wget http://downloads.sourceforge.net/project/urho3d/Urho3D/1.6/Urho3D-1.6-Linux-64bit-SHARED.tar.gz -O /tmp/Urho3D.tar.gz
 - tar -xvf /tmp/Urho3D.tar.gz
 - export URHO3D_HOME=/tmp/Urho3D-1.6-Linux-64bit-SHARED/usr/local/
 script: 
