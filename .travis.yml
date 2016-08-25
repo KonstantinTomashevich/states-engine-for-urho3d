@@ -1,2 +1,3 @@
 language: cpp
 compiler: gcc
+script: cmake . -G "MSYS Makefiles" -DSTATES_ENGINE_ENABLE_TESTING && make && make test
