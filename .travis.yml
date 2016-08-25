@@ -4,11 +4,10 @@ dist: trusty
 sudo: required
 before_script:
 - echo $PWD
-- wget http://downloads.sourceforge.net/project/urho3d/Urho3D/1.6/Urho3D-1.6-Linux-64bit-SHARED.tar.gz -O /tmp/Urho3D.tar.gz
-- tar -xvf /tmp/Urho3D.tar.gz
-- export URHO3D_HOME=$PWD/tmp/Urho3D/Urho3D-1.6-Linux-64bit-SHARED/usr/local
+- wget http://downloads.sourceforge.net/project/urho3d/Urho3D/1.6/Urho3D-1.6-Linux-64bit-SHARED.tar.gz -O Urho3D.tar.gz
+- tar -xvf Urho3D.tar.gz
+- export URHO3D_HOME=$PWD/Urho3D-1.6-Linux-64bit-SHARED/usr/local
 - echo $URHO3D_HOME
-- mv /tmp/Urho3D/Urho3D-1.6-Linux-64bit-SHARED/usr/local/* -f /
 script:
 - mkdir build 
 - cd build 
