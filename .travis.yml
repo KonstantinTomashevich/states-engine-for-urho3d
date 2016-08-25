@@ -8,6 +8,6 @@ before_script:
 script:
 - mkdir build 
 - cd build 
-- cmake .. -DSTATES_ENGINE_ENABLE_TESTING=1 -DURHO3D_HOME=/tmp/Urho3D-1.6-Linux-64bit-SHARED/
+- cmake .. -DSTATES_ENGINE_ENABLE_TESTING=1 -DURHO3D_HOME=/tmp/Urho3D/Urho3D-1.6-Linux-64bit-SHARED/
 - make 
 - make test
