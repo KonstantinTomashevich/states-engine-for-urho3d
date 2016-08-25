@@ -1,3 +1,12 @@
 language: cpp
 compiler: gcc
-script: cmake . -DSTATES_ENGINE_ENABLE_TESTING=1 && make && make test
+dist: trusty
+before_script:
+- wget http://downloads.sourceforge.net/project/urho3d/Urho3D/1.6/Urho3D-1.6-Linux-64bit-SHARED.tar.gz?r=&ts=1472122378&use_mirror=netix -O /tmp/Urho3D.tar.gz
+- tar -xvf /tmp/Urho3D.tar.gz
+- export URHO3D_HOME=/tmp/Urho3D-1.6-Linux-64bit-SHARED/usr/local/
+script: 
+- sh cmake_codeblocks.sh build -DSTATES_ENGINE_ENABLE_TESTING=1 
+- cd build 
+- make 
+- make test
