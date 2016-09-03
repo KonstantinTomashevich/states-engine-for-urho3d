@@ -18,11 +18,11 @@ if (COMMAND cmake_policy)
 endif ()
 enable_testing ()
 # Set CMake modules search path
-set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/CMake/Modules)
+set (CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/vendors/CMake/Modules)
 # Include Urho3D Cmake common module
 include (Urho3D-CMake-common)
 # Find Urho3D library
 find_package (Urho3D REQUIRED)
 include_directories (${URHO3D_INCLUDE_DIRS})
 #Include sources
-add_subdirectory (Source)
+add_subdirectory (sources)
