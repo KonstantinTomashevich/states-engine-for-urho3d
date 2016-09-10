@@ -1,0 +1,26 @@
+$using namespace StatesEngine;
+$using namespace Urho3D;
+module StatesEngine
+{
+class StateObjectsManager : public StateObject
+{
+    StateObjectsManager (Urho3D::Context *context);
+    bool ReInitAll (Urho3D::String typeName);
+    bool UpdateAll (Urho3D::String typeName, float timeStep);
+    bool DisposeAll (Urho3D::String typeName);
+    bool IsUseLog ();
+    void SetIsUseLog (bool isUseLog);
+    virtual ~StateObjectsManager ();
+
+    Urho3D::SharedPtr <StateObject> Get (Urho3D::String typeName);
+    void Add (Urho3D::SharedPtr <StateObject> object);
+    bool Remove (Urho3D::SharedPtr <StateObject> object);
+
+    Urho3D::Vector <Urho3D::SharedPtr <StateObject> > *GetAll (Urho3D::String typeName);
+    void RemoveAll (Urho3D::String typeName);
+
+    bool IsContain (Urho3D::String typeName);
+    int CountOf (Urho3D::String typeName);
+    Urho3D::SharedPtr <StateObject> Create (Urho3D::String typeName);
+}
+}

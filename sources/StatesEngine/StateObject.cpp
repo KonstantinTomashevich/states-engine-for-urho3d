@@ -1,4 +1,4 @@
-﻿#include "StateObject.hpp"
+#include "StateObject.hpp"
 #include "Urho3D/IO/Log.h"
 #include "BuildConfig.hpp"
 namespace StatesEngine
@@ -10,6 +10,21 @@ StateObject::StateObject (Urho3D::Context *context) : Urho3D::Object (context)
     isWillBeDeleted_ = false;
     isWillBeUpdated_ = true;
     parent_ = 0;
+}
+
+bool StateObject::Init ()
+{
+    assert (false);
+}
+
+bool StateObject::Update (float timeStep)
+{
+    assert (false);
+}
+
+bool StateObject::Dispose ()
+{
+    assert (false);
 }
 
 bool StateObject::IsReady ()

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <Urho3D/Urho3D.h>
 #include <Urho3D/Container/Vector.h>
 #include <Urho3D/Container/Ptr.h>
@@ -6,9 +6,7 @@
 #include "StateObject.hpp"
 #include "BuildConfig.hpp"
 
-/*!
- * Namespace for all States Engine classes.
- */
+/// \brief Namespace for all States Engine classes.
 namespace StatesEngine
 {
 
@@ -38,19 +36,17 @@ public:
     Urho3D::SharedPtr <StateObject> Get (Urho3D::String typeName);
     /// Adds given state object and calls Init () of it if it's *IsReady () == false*.
     void Add (Urho3D::SharedPtr <StateObject> object);
-    /*! \brief Removes given object from state.
-     *  \param [in] object object to remove.
-     *  \param [in] isDelete call *delete object;* after removing?
-     */
+    ///  \brief Removes given object from state.
+    ///  \param [in] object object to remove.
+    ///  \param [in] isDelete call *delete object;* after removing?
     bool Remove (Urho3D::SharedPtr <StateObject> object);
 
     /// Returns new vector with all state objects with given type.
     Urho3D::Vector <Urho3D::SharedPtr <StateObject> > *GetAll (Urho3D::String typeName);
 
-    /*! \brief Removes all objects with given type.
-     *  \param [in] typeName objects type name, see Urho3D::Object::GetTypeName ().
-     *  \param [in] isDelete call *delete object;* after removing?
-     */
+    ///  \brief Removes all objects with given type.
+    ///  \param [in] typeName objects type name, see Urho3D::Object::GetTypeName ().
+    ///  \param [in] isDelete call *delete object;* after removing?
     void RemoveAll (Urho3D::String typeName);
 
     /// Is contain at least one state object with given type?
@@ -58,10 +54,9 @@ public:
     /// Returns count of state objects with given type.
     int CountOf (Urho3D::String typeName);
 
-    /*! \brief Create object of given type and add it to hub.
-     *  \param typeName typeName of given object. Objects factory will be registered in context.
-     *  \return Urho3D::SharedPtr to created object.
-     */
+    ///  \brief Create object of given type and add it to hub.
+    ///  \param typeName typeName of given object. Objects factory will be registered in context.
+    ///  \return Urho3D::SharedPtr to created object.
     Urho3D::SharedPtr <StateObject> Create (Urho3D::String typeName);
 
     /// Template version of StateObjectsHub::Get (Urho3D::String).

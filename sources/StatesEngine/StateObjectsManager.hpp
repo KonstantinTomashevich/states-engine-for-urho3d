@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <Urho3D/Urho3D.h>
 #include <Urho3D/Core/Object.h>
 #include <Urho3D/Container/Vector.h>
@@ -7,9 +7,7 @@
 #include "StateObject.hpp"
 #include "StateObjectsHub.hpp"
 
-/*!
- * Namespace for all States Engine classes.
- */
+/// \brief Namespace for all States Engine classes.
 namespace StatesEngine
 {
 

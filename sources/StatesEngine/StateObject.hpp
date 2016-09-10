@@ -1,17 +1,13 @@
-﻿#pragma once
+#pragma once
 #include <Urho3D/Urho3D.h>
 #include <Urho3D/Core/Object.h>
 #include <Urho3D/Engine/Application.h>
 
-/*!
- * \brief Namespace for all States Engine classes.
- */
+/// \brief \brief Namespace for all States Engine classes.
 namespace StatesEngine
 {
 
-/*!
- * \brief Basic class for all objects in your game states.
- */
+/// \brief Basic class for all objects in your game states.
 class StateObject : public Urho3D::Object
 {
 URHO3D_OBJECT (StateObject, Object)
@@ -27,11 +23,11 @@ protected:
 public:
     StateObject (Urho3D::Context *context);
     /// Initialize your object here. Set *ready_ = true* in successfull end of initialize.
-    virtual bool Init () = 0;
+    virtual bool Init ();
     /// Update. Will be runned every frame if *ready_ == true* and *isWillBeUpdated_ == true*.
-    virtual bool Update (float timeStep) = 0;
+    virtual bool Update (float timeStep);
     /// Dispose of your object. Remember to set *ready_ = false* if you want to reuse objects!
-    virtual bool Dispose () = 0;
+    virtual bool Dispose ();
 
     bool IsReady ();
     bool IsWillBeDeleted ();
@@ -40,7 +36,7 @@ public:
     virtual void SetIsWillBeUpdated (bool isWillBeUpdated);
 
     StateObject *GetParent ();
-    void SetParent (StateObject *parent);
+    virtual void SetParent (StateObject *parent);
     virtual ~StateObject ();
 };
 }

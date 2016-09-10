@@ -1,0 +1,24 @@
+$using namespace StatesEngine;
+$using namespace Urho3D;
+module StatesEngine
+{
+class SceneContainer : public StateObject
+{
+    SceneContainer (Urho3D::Context *context);
+    void Set (Urho3D::SharedPtr <Urho3D::Scene> scene);
+    void Set (Urho3D::XMLElement source);
+    void Set (Urho3D::String pathToXML);
+    
+    Urho3D::SharedPtr <Urho3D::Scene> Get ();
+    Urho3D::Node *GetNode (Urho3D::String wayToNode);
+
+    void SetupSceneViewport (int index, Urho3D::Node *cameraNode, Urho3D::IntRect rectangle, int shadowMapSize = 1024);
+    void SetupSceneViewport (int index, Urho3D::String wayToCameraNode, Urho3D::IntRect rectangle, int shadowMapSize = 1024);
+
+    void Release ();
+    virtual bool Init ();
+    virtual bool Update (float timeStep);
+    virtual bool Dispose ();
+    virtual ~SceneContainer ();
+}
+}

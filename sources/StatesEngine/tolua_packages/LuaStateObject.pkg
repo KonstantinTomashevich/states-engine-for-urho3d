@@ -1,0 +1,26 @@
+$using namespace StatesEngine;
+$using namespace Urho3D;
+module StatesEngine
+{
+class LuaStateObject : public StateObject
+{
+    LuaStateObject (Context *context);
+    virtual bool Init ();
+    virtual bool Update (float timeStep);
+    virtual bool Dispose ();
+
+    bool IsReady ();
+    bool IsWillBeDeleted ();
+    virtual bool IsWillBeUpdated ();
+    virtual void SetIsWillBeUpdated (bool isWillBeUpdated);
+
+    StateObject *GetParent ();
+    void SetParent (StateObject *parent);
+    
+    void CreateObject (String luaTypeName, String arguments = "");
+    String GetObjectName ();
+    bool IsObjectNotNull ();
+    void ReleaseLuaObject ();
+    virtual ~LuaStateObject ();
+}
+}

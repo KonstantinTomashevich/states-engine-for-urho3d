@@ -2,14 +2,10 @@
 #include <Urho3D/Math/StringHash.h>
 #include <Urho3D/Core/Object.h>
 
-/*!
- * Namespace for all States Engine classes.
- */
+/// \brief Namespace for all States Engine classes.
 namespace StatesEngine
 {
-/*!
- * Namespace for all States Engine events.
- */
+/// \brief Namespace for all States Engine events.
 namespace Events
 {
 URHO3D_EVENT (E_STATE_OBJECT_ADDED_TO_HUB, StateObjectAddedToHub)

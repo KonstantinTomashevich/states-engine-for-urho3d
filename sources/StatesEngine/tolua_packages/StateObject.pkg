@@ -1,0 +1,21 @@
+$using namespace StatesEngine;
+$using namespace Urho3D;
+module StatesEngine
+{
+class StateObject : public Object
+{
+    StateObject (Context *context);
+    virtual bool Init ();
+    virtual bool Update (float timeStep);
+    virtual bool Dispose ();
+
+    bool IsReady ();
+    bool IsWillBeDeleted ();
+    virtual bool IsWillBeUpdated ();
+    virtual void SetIsWillBeUpdated (bool isWillBeUpdated);
+
+    StateObject *GetParent ();
+    virtual void SetParent (StateObject *parent);
+    virtual ~StateObject ();
+}
+}
