@@ -24,7 +24,7 @@ if (STATES_ENGINE_LUA)
     # --- Run tolua++ on each top-level package and generate code for it's include --- #
     foreach (Package ${LuaPackages})
         get_filename_component (PackageName ${Package} NAME_WE)
-        execute_process (COMMAND ${TOLUAXX_EXECUTABLE} -o ${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp ${Package})
+        execute_process (COMMAND ${TOLUAXX_EXECUTABLE} -L "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/ToCppHook.lua" -o ${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp ${Package})
 
         set (PerPackageEnableHeader "${PerPackageEnableHeader}void Enable${PackageName} (Urho3D::LuaScript *luaScript);\n")
         set (PackagesCXXHeadersInclude "${PackagesCXXHeadersInclude}#include \"${PackageName}.hpp\"\n")

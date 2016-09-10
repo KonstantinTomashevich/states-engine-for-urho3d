@@ -2,12 +2,37 @@
 ** Lua binding: StatesEngine
 */
 
-#ifndef __cplusplus
-#include "stdlib.h"
-#endif
-#include "string.h"
+//
+// Copyright (c) 2008-2016 the Urho3D project.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
 
-#include "tolua++.h"
+#include <Urho3D/Precompiled.h>
+
+#include <Urho3D/ThirdParty/toluapp/tolua++.h>
+#include <Urho3D/LuaScript/ToluaUtils.h>
+
+#if __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-function"
+#endif
 
 /* Exported function */
 TOLUA_API int tolua_StatesEngine_open (lua_State* tolua_S);
@@ -24,13 +49,6 @@ static int tolua_collect_StatesEngineSubsystem (lua_State* tolua_S)
  Mtolua_delete(self);
  return 0;
 }
-
-static int tolua_collect_Urho3D__SharedPtr_StateObject_ (lua_State* tolua_S)
-{
- Urho3D::SharedPtr<StateObject>* self = (Urho3D::SharedPtr<StateObject>*) tolua_tousertype(tolua_S,1,0);
- Mtolua_delete(self);
- return 0;
-}
 #endif
 
 
@@ -43,6 +61,7 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"Urho3D::StringHash");
  tolua_usertype(tolua_S,"StatesEngineSubsystem");
  tolua_usertype(tolua_S,"Urho3D::SharedPtr<StateObject>");
+ tolua_usertype(tolua_S,"StateObject");
 }
 
 /* method: new of class  StatesEngineSubsystem */
@@ -224,18 +243,8 @@ static int tolua_StatesEngine_StatesEngine_StatesEngineSubsystem_GetState00(lua_
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetState'", NULL);
 #endif
  {
-  Urho3D::SharedPtr<StateObject> tolua_ret = (Urho3D::SharedPtr<StateObject>)  self->GetState();
- {
-#ifdef __cplusplus
- void* tolua_obj = Mtolua_new((Urho3D::SharedPtr<StateObject>)(tolua_ret));
-  tolua_pushusertype(tolua_S,tolua_obj,"Urho3D::SharedPtr<StateObject>");
- tolua_register_gc(tolua_S,lua_gettop(tolua_S));
-#else
- void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(Urho3D::SharedPtr<StateObject>));
-  tolua_pushusertype(tolua_S,tolua_obj,"Urho3D::SharedPtr<StateObject>");
- tolua_register_gc(tolua_S,lua_gettop(tolua_S));
-#endif
- }
+  StateObject* tolua_ret = (StateObject*)  self->GetState();
+  ToluaPushObject(tolua_S,(void*)tolua_ret,"StateObject");
  }
  }
  return 1;
@@ -475,3 +484,6 @@ TOLUA_API int tolua_StatesEngine_open (lua_State* tolua_S)
 };
 #endif
 
+#if __clang__
+#pragma clang diagnostic pop
+#endif

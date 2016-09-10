@@ -39,14 +39,7 @@ function TestStatesEngine ()
     end
     
     local testObject1 = StatesEngine.LuaStateObject:new (context)
-    local testObject2 = StatesEngine.LuaStateObject:new (context)
-    
     testObject1:CreateObject ("_G.TestObject", "123")
-    testObject2:CreateObject ("_G.TestObject", "456")
-    
-    testObject2:SetParent (testObject1)
-    
     testObject1:delete ()
-    testObject2:delete ()
     return 0
 end

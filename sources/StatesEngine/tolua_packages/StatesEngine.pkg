@@ -9,7 +9,8 @@ class StatesEngineSubsystem : Object
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap& info);
     bool Dispose ();
 
-    Urho3D::SharedPtr <StateObject> GetState ();
+    // template <class T> T* GetState ();
+    StateObject *GetState ();
     bool HasState ();
     void DisposeState ();
     bool IsState (Urho3D::String typeName);

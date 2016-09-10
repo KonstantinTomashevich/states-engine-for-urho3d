@@ -2,12 +2,37 @@
 ** Lua binding: StateObject
 */
 
-#ifndef __cplusplus
-#include "stdlib.h"
-#endif
-#include "string.h"
+//
+// Copyright (c) 2008-2016 the Urho3D project.
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in
+// all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+// THE SOFTWARE.
+//
 
-#include "tolua++.h"
+#include <Urho3D/Precompiled.h>
+
+#include <Urho3D/ThirdParty/toluapp/tolua++.h>
+#include <Urho3D/LuaScript/ToluaUtils.h>
+
+#if __clang__
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wunused-function"
+#endif
 
 /* Exported function */
 TOLUA_API int tolua_StateObject_open (lua_State* tolua_S);
@@ -53,7 +78,7 @@ static int tolua_StateObject_StatesEngine_StateObject_new00(lua_State* tolua_S)
   Context* context = ((Context*)  tolua_tousertype(tolua_S,2,0));
  {
   StateObject* tolua_ret = (StateObject*)  Mtolua_new((StateObject)(context));
-  tolua_pushusertype(tolua_S,(void*)tolua_ret,"StateObject");
+  ToluaPushObject(tolua_S,(void*)tolua_ret,"StateObject");
  }
  }
  return 1;
@@ -83,7 +108,7 @@ static int tolua_StateObject_StatesEngine_StateObject_new00_local(lua_State* tol
   Context* context = ((Context*)  tolua_tousertype(tolua_S,2,0));
  {
   StateObject* tolua_ret = (StateObject*)  Mtolua_new((StateObject)(context));
-  tolua_pushusertype(tolua_S,(void*)tolua_ret,"StateObject");
+  ToluaPushObject(tolua_S,(void*)tolua_ret,"StateObject");
  tolua_register_gc(tolua_S,lua_gettop(tolua_S));
  }
  }
@@ -343,7 +368,7 @@ static int tolua_StateObject_StatesEngine_StateObject_GetParent00(lua_State* tol
 #endif
  {
   StateObject* tolua_ret = (StateObject*)  self->GetParent();
-  tolua_pushusertype(tolua_S,(void*)tolua_ret,"StateObject");
+  ToluaPushObject(tolua_S,(void*)tolua_ret,"StateObject");
  }
  }
  return 1;
@@ -458,3 +483,6 @@ TOLUA_API int tolua_StateObject_open (lua_State* tolua_S)
 };
 #endif
 
+#if __clang__
+#pragma clang diagnostic pop
+#endif
