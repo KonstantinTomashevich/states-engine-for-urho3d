@@ -29,6 +29,7 @@ after_failure:
 - cd ..
 - cd sources
 - cd StatesEngine
-- mv tolua_AllStatesEngine.cpp tolua_AllStatesEngine.txt
 - ls
-- cat tolua_AllStatesEngine.txt
+- filesize = $(stat -c%s "tolua_AllStatesEngine.cpp")
+- echo #filesize
+- cat tolua_AllStatesEngine.cpp

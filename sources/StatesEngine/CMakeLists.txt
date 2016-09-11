@@ -11,15 +11,15 @@ if (STATES_ENGINE_LUA)
     message (STATUS "Current TOLUAXX_EXECUTABLE is: ${TOLUAXX_EXECUTABLE}")
 
     set (UmbrellaPkgCode "")
+    if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/AllStatesEngine.pkg")
+        file (REMOVE "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/AllStatesEngine.pkg")
+    endif ()
+
     file (GLOB TopLevelPackages "tolua_packages/*.pkg")
     foreach (TopLevelPackage ${TopLevelPackages})
         file (RELATIVE_PATH TopLevelPackageRelative "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages" ${TopLevelPackage})
         set (UmbrellaPkgCode "${UmbrellaPkgCode}$pfile \"${TopLevelPackageRelative}\"\n")
     endforeach ()
-
-    if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/AllStatesEngine.pkg")
-        file (REMOVE "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/AllStatesEngine.pkg")
-    endif ()
     file (WRITE "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/AllStatesEngine.pkg" ${UmbrellaPkgCode})
 
     # --- Run tolua++ --- #
