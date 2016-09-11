@@ -1,7 +1,7 @@
 # --- Create tolua++ StatesEngine bindings --- $
 if (STATES_ENGINE_LUA)
     # --- Copy tolua++ header because tolua++ generates files with relative include ("#include "tolua++.h") --- #
-    file (COPY ${URHO3D_HOME}/include/Urho3D/ThirdParty/toluapp/tolua++.h DESTINATION ${CMAKE_CURRENT_SOURCE_DIR}/generated)
+    file (COPY "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/InitStatesEngine.lua" DESTINATION "${CMAKE_SOURCE_DIR}/bin/Data/StatesEngineLua")
 
     # --- Setup Urho3D's default tolua++ executable if it isn't specified --- #
     if (NOT TOLUAXX_EXECUTABLE)
@@ -10,53 +10,40 @@ if (STATES_ENGINE_LUA)
     endif ()
     message (STATUS "Current TOLUAXX_EXECUTABLE is: ${TOLUAXX_EXECUTABLE}")
 
-    # --- Scan for top-level tolua++ packages --- #
-    file (GLOB LuaPackages tolua_packages/*.pkg)
-
-    set (ToLuaFiles "")
-    set (PerPackageEnableHeader "")
-    set (PackagesCXXHeadersInclude "")
-    set (IncludesList "")
-    set (EnableAllCode "")
-    set (LuaInitAllCode "")
-    set (EnablersAndInitializerCode "")
-
-    # --- Run tolua++ on each top-level package and generate code for it's include --- #
-    foreach (Package ${LuaPackages})
-        get_filename_component (PackageName ${Package} NAME_WE)
-        # --- Execute tolua++ --- #
-        execute_process (COMMAND ${TOLUAXX_EXECUTABLE} -L "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/ToCppHook.lua" ${Package} OUTPUT_VARIABLE TOLUAXX_OUTPUT)
-
-        # --- Write tolua++ output to file --- "
-        if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp")
-            file (REMOVE "${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp")
-        endif ()
-        file (WRITE "${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp" "${TOLUAXX_OUTPUT}")
-
-        set (PerPackageEnableHeader "${PerPackageEnableHeader}void Enable${PackageName} (Urho3D::LuaScript *luaScript);\n")
-        set (PackagesCXXHeadersInclude "${PackagesCXXHeadersInclude}#include \"${PackageName}.hpp\"\n")
-        set (IncludesList "${IncludesList}namespace ToLuaXX_${PackageName}\n{\n#include \"generated/tolua_${PackageName}.cpp\"\n}\n\n")
-        set (EnableAllCode "${EnableAllCode}    Enable${PackageName} (luaScript);\n")
-        set (EnablersAndInitializerCode "${EnablersAndInitializerCode}void Enable${PackageName} (Urho3D::LuaScript *luaScript)\n{\n")
-        set (EnablersAndInitializerCode "${EnablersAndInitializerCode}    ToLuaXX_${PackageName}::tolua_${PackageName}_open (luaScript->GetState ());\n}\n")
-
-        # --- Execute special setup code for package if needed --- #
-        if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/__init.${PackageName}.lua")
-            file (COPY "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/__init.${PackageName}.lua" DESTINATION "${CMAKE_SOURCE_DIR}/bin/Data/ToLuaPackagesInitializers")
-
-            set (EnablersAndInitializerCode "${EnablersAndInitializerCode}\nvoid LuaInit${PackageName} (Urho3D::LuaScript *luaScript)\n{\n")
-            set (EnablersAndInitializerCode "${EnablersAndInitializerCode}    luaScript->ExecuteFile (\"ToLuaPackagesInitializers/__init.${PackageName}.lua\");\n}\n")
-
-            set (PerPackageEnableHeader "${PerPackageEnableHeader}void LuaInit${PackageName} (Urho3D::LuaScript *luaScript);\n")
-            set (LuaInitAllCode "${LuaInitAllCode}    LuaInit${PackageName} (luaScript);\n")
-        endif ()
-        set (EnablersAndInitializerCode "${EnablersAndInitializerCode}\n")
+    set (UmbrellaPkgCode "")
+    file (GLOB TopLevelPackages "tolua_packages/*.pkg")
+    foreach (TopLevelPackage ${TopLevelPackages})
+        file (RELATIVE_PATH TopLevelPackageRelative "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages" ${TopLevelPackage})
+        set (UmbrellaPkgCode "${UmbrellaPkgCode}$pfile \"${TopLevelPackageRelative}\"\n")
     endforeach ()
 
-    # --- Write enablers code to special compile module for easier using in application --- #
-    configure_file (${CMAKE_CURRENT_SOURCE_DIR}/EnableLuaBindings.hpp.cmake ${CMAKE_CURRENT_SOURCE_DIR}/EnableLuaBindings.hpp)
-    configure_file (${CMAKE_CURRENT_SOURCE_DIR}/EnableLuaBindings.cpp.cmake ${CMAKE_CURRENT_SOURCE_DIR}/EnableLuaBindings.cpp)
+    if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/AllStatesEngine.pkg")
+        file (REMOVE "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/AllStatesEngine.pkg")
+    endif ()
+    file (WRITE "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/AllStatesEngine.pkg" ${UmbrellaPkgCode})
+
+    # --- Run tolua++ --- #
+    execute_process (COMMAND ${TOLUAXX_EXECUTABLE} -L "ToCppHook.lua" "AllStatesEngine.pkg" WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages" OUTPUT_VARIABLE TOLUAXX_OUTPUT)
+
+    # --- Write tolua++ output--- "
+    if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tolua_AllStatesEngine.cpp")
+        file (REMOVE "${CMAKE_CURRENT_SOURCE_DIR}/tolua_AllStatesEngine.cpp")
+    endif ()
+    file (WRITE "${CMAKE_CURRENT_SOURCE_DIR}/tolua_AllStatesEngine.cpp" "${TOLUAXX_OUTPUT}")
 endif ()
+
+# --- Generate StatesEngineAll.hpp --- #
+file (GLOB Headers "*.hpp")
+set (HeadersCode "#pragma once\n")
+foreach (Header ${Headers})
+    file (RELATIVE_PATH HeaderRelative ${CMAKE_CURRENT_SOURCE_DIR} ${Header})
+    set (HeadersCode "${HeadersCode}#include \"${HeaderRelative}\"\n")
+endforeach ()
+
+if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/StatesEngineAll.hpp")
+    file (REMOVE "${CMAKE_CURRENT_SOURCE_DIR}/StatesEngineAll.hpp")
+endif ()
+file (WRITE "${CMAKE_CURRENT_SOURCE_DIR}/StatesEngineAll.hpp" ${HeadersCode})
 
 # --- Setup StatesEngine target --- #
 if (NOT STATES_ENGINE_LIB_TYPE)
@@ -65,6 +52,7 @@ endif ()
 
 set (TARGET_NAME StatesEngine)
 define_source_files (GLOB_H_PATTERNS "*.hpp")
+list (REMOVE_ITEM SOURCE_FILES "tolua_AllStatesEngine.cpp")
 define_dependency_libs (Urho3D)
 setup_library (${STATES_ENGINE_LIB_TYPE})
 

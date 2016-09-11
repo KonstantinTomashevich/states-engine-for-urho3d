@@ -81,7 +81,5 @@ $RECYCLE.BIN/
 
 # Generated files
 BuildConfig.hpp
-EnableLuaBindings.cpp
-EnableLuaBindings.hpp
 tolua_*.cpp
 tolua++.h

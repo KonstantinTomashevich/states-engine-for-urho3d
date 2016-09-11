@@ -33,7 +33,7 @@ void TestStatesEngineLua::Start ()
 
     Urho3D::LuaScript *luaScript = new Urho3D::LuaScript (context_);
     context_->RegisterSubsystem (luaScript);
-    StatesEngine::ToLua::EnableAll (luaScript);
+    StatesEngine::EnableLuaBindings (luaScript);
     luaScript->ExecuteFile ("TestStatesEngine.lua");
 
     Urho3D::LuaFunction *testFunction = luaScript->GetFunction ("TestStatesEngine");

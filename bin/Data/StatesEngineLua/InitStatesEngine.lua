@@ -1,0 +1,124 @@
+--- Helper function for defining classes.
+function Class (...)
+    local newClass = {}
+    local bases = {...}
+    
+    for index, base in ipairs (bases) do
+        for key, value in pairs (base) do
+            newClass [key] = value
+        end
+    end
+    
+    if newClass.HasCXXBase == nil then
+        newClass.HasCXXBase = function () return false end
+    end
+    
+    newClass.__index = newClass
+    newClass.IsA = { [newClass] = true }
+    for index, base in ipairs (bases) do
+        if base.IsA ~= nil then
+            for baseOfBase in pairs (base.IsA) do
+                newClass.IsA [baseOfBase] = true
+            end
+        end
+        newClass.IsA [ base ] = true
+    end
+    
+    setmetatable (newClass,
+        {__call = 
+            function (classType, ...)
+                local instance = setmetatable ( {}, classType)
+                local init = instance.Construct
+                if init then 
+                    init (instance, ...) 
+                end
+                return instance
+            end}
+        )
+    
+    return newClass
+end
+
+--- Create table for StatesEngine lua utils.
+_G.StatesEngineUtils = {}
+
+--- Add getter for StatesEngine.
+function GetStatesEngine ()
+    return StatesEngine.StatesEngineSubsystem:GetInstance ()
+end
+
+--- Add variables for easier using of StatesEngine events.
+_G.StatesEngineUtils.Events = {}
+_G.StatesEngineUtils.Events.E_STATE_OBJECT_ADDED_TO_HUB = "StateObjectAddedToHub"
+_G.StatesEngineUtils.Events.OnStateStateObjectAddedToHub = {}
+_G.StatesEngineUtils.Events.OnStateStateObjectAddedToHub.P_STATE_OBJECT = "StateObject"
+_G.StatesEngineUtils.Events.OnStateStateObjectAddedToHub.P_HUB = "Hub"
+
+_G.StatesEngineUtils.Events.E_STATE_OBJECT_REMOVED_FROM_HUB = "StateObjectRemovedFromHub"
+_G.StatesEngineUtils.Events.OnStateStateObjectRemovedFromHub = {}
+_G.StatesEngineUtils.Events.OnStateStateObjectRemovedFromHub.P_STATE_OBJECT = "StateObject"
+_G.StatesEngineUtils.Events.OnStateStateObjectRemovedFromHub.P_HUB = "Hub"
+
+--- Create table for lua state objects instances.
+_G.StatesEngineUtils.LuaStateObjects = {}
+
+--- ! Can be removed later !
+--- ! Used by C++ !
+--- Check is lua instance exists, for LuaStateObject internal use.
+function _G.StatesEngineUtils:IsLuaStateObjectExists (name)
+    if type (_G.StatesEngineUtils.LuaStateObjects [name]) ~= "nil" then
+        return 1
+    else
+        return 0
+    end
+end
+
+--- ! Can be removed later !
+--- ! Used by C++ !
+--- Delete lua instance if it in lua instances table.
+function _G.StatesEngineUtils:ReleaseLuaStateObject (name)
+    if _G.StatesEngineUtils.IsLuaStateObjectExists (name) == 1 then
+        _G.StatesEngineUtils.LuaStateObjects [name] = nil
+        return true;
+    end
+    return false;
+end
+
+--- Get lua state object instance data table.
+function _G.StatesEngineUtils.GetLuaTable (luaStateObjectInstance)
+    return _G.StatesEngineUtils.LuaStateObjects [luaStateObjectInstance:GetObjectName ()]
+end
+
+_G.StatesEngineUtils.LuaStateObjectInstance = Class ()
+function _G.StatesEngineUtils.LuaStateObjectInstance:Construct ()
+    self.ready_ = false
+    self.isWillBeUpdated_ = true
+    self.isWillBeDeleted_ = false
+    self.parent_ = nil
+end
+
+--- ! Will be overrided in inheritors !
+--- ! Used by C++ !
+function _G.StatesEngineUtils.LuaStateObjectInstance:Init ()
+    Log:Write (LOG_WARNING "Called empty LuaStateObjectInstance:Init ()!")
+    self.ready_ = true
+    self.lastInitReturn_ = true
+    return true
+end
+
+--- ! Will be overrided in inheritors !
+--- ! Used by C++ !
+function _G.StatesEngineUtils.LuaStateObjectInstance:Update (timeStep)
+    Log:Write (LOG_WARNING, "Called empty LuaStateObjectInstance:Update (timeStep)!")
+    self.lastUpdateReturn_ = true
+    return true
+end
+
+--- ! Will be overrided in inheritors !
+--- ! Used by C++ !
+function _G.StatesEngineUtils.LuaStateObjectInstance:Dispose ()
+    Log:Write (LOG_WARNING, "Called empty LuaStateObjectInstance:Dispose ()!")
+    self.ready_ = true
+    self.lastDisposeReturn_ = true
+    return true
+end
