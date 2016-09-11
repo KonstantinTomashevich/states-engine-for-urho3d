@@ -4,21 +4,21 @@ module StatesEngine
 {
 class StateObjectsManager : public StateObject
 {
-    StateObjectsManager (Urho3D::Context *context);
-    bool ReInitAll (Urho3D::String typeName);
-    bool UpdateAll (Urho3D::String typeName, float timeStep);
-    bool DisposeAll (Urho3D::String typeName);
+    StateObjectsManager (Context *context);
+    bool ReInitAll (String typeName);
+    bool UpdateAll (String typeName, float timeStep);
+    bool DisposeAll (String typeName);
     bool IsUseLog ();
     void SetIsUseLog (bool isUseLog);
     virtual ~StateObjectsManager ();
 
-    StateObject *Lua_Get @ Get (Urho3D::String typeName);
+    StateObject *Lua_Get @ Get (String typeName);
     void Lua_Add @ Add (StateObject *object);
     bool Lua_Remove @ Remove (StateObject *object, bool dontDelete = false);
-    StateObject *Lua_Create @ Create (Urho3D::String typeName);
-    Urho3D::Vector <StateObject *> Lua_GetAll @ GetAll (Urho3D::String typeName);
-    void Lua_RemoveAll @ RemoveAll (Urho3D::String typeName, bool dontDelete = false);
-    bool IsContain (Urho3D::String typeName);
-    int CountOf (Urho3D::String typeName);
+    StateObject *Lua_Create @ Create (String typeName);
+    Vector <StateObject *> Lua_GetAll @ GetAll (String typeName);
+    void Lua_RemoveAll @ RemoveAll (String typeName, bool dontDelete = false);
+    bool IsContain (String typeName);
+    int CountOf (String typeName);
 }
 }

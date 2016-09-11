@@ -4,17 +4,17 @@ module StatesEngine
 {
 class SceneContainer : public StateObject
 {
-    SceneContainer (Urho3D::Context *context);
-    void Set @ SetFromXMLElement (Urho3D::XMLElement source);
-    void Set @ SetFromXMLFile (Urho3D::String pathToXML);
+    SceneContainer (Context *context);
+    void Set @ SetFromXMLElement (XMLElement source);
+    void Set @ SetFromXMLFile (String pathToXML);
     
-    void Lua_Set @ Set (Urho3D::Scene *scene, bool isKeepPrevious = false);
-    Urho3D::Scene *Lua_Get @ Get ();
-    Urho3D::SharedPtr <Urho3D::Scene> Get ();
-    Urho3D::Node *GetNode (Urho3D::String wayToNode);
+    void Lua_Set @ Set (Scene *scene, bool isKeepPrevious = false);
+    Scene *Lua_Get @ Get ();
+    SharedPtr <Scene> Get ();
+    Node *GetNode (String wayToNode);
 
-    void SetupSceneViewport (int index, Urho3D::Node *cameraNode, Urho3D::IntRect rectangle, int shadowMapSize = 1024);
-    void SetupSceneViewport (int index, Urho3D::String wayToCameraNode, Urho3D::IntRect rectangle, int shadowMapSize = 1024);
+    void SetupSceneViewport (int index, Node *cameraNode, IntRect rectangle, int shadowMapSize = 1024);
+    void SetupSceneViewport (int index, String wayToCameraNode, IntRect rectangle, int shadowMapSize = 1024);
 
     void Release ();
     virtual bool Init ();

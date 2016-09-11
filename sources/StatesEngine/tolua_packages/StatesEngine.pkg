@@ -4,9 +4,9 @@ module StatesEngine
 {
 class StatesEngineSubsystem : Object
 {
-    StatesEngineSubsystem (Urho3D::Context *context);
+    StatesEngineSubsystem (Context *context);
     bool Init ();
-    void Update (Urho3D::StringHash eventType, Urho3D::VariantMap& info);
+    void Update (StringHash eventType, VariantMap& info);
     bool Dispose ();
 
     StateObject *Lua_GetState @ GetState ();
@@ -14,7 +14,7 @@ class StatesEngineSubsystem : Object
     
     bool HasState ();
     void DisposeState ();
-    bool IsState (Urho3D::String typeName);
+    bool IsState (String typeName);
     static StatesEngineSubsystem *GetInstance ();
     ~StatesEngineSubsystem ();
 }

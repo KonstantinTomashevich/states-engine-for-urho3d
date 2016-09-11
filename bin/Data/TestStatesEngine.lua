@@ -38,16 +38,51 @@ function TestStatesEngine ()
         return 1
     end
     
+    if GetStatesEngine ():GetState () == nil then
+        Log:Write (LOG_INFO, "FAILED: StatesEngine's GetState return nil in script")
+        return 2
+    end
+    
+    -- TODO: GetStatesEngine ():GetState ():Create () isn't work now, will be fixed later.
+    
     local testObject1 = StatesEngine.LuaStateObject:new (context)
-    local testObject2 = StatesEngine.LuaStateObject:new (context)
+    testObject1:CreateObject ("_G.TestObject", "\"Hello, world!\"")
+    GetStatesEngine ():GetState ():Add (testObject1)
     
-    testObject1:CreateObject ("_G.TestObject", "123")
-    testObject2:CreateObject ("_G.TestObject", "456")
+    if _G.StatesEngineUtils.LuaStateObjects [testObject1:GetObjectName ()].ready_ ~= true then
+        Log:Write (LOG_INFO, "FAILED: Object isn't ready after GetStatesEngine ():GetState ():Add ()!")
+        return 2
+    end
     
-    testObject2:SetParent (testObject1)
-    Log:Write (LOG_INFO, tostring (_G.StatesEngineUtils.GetLuaTable (testObject2:GetParent ()).containedValue_))
+    if _G.StatesEngineUtils.LuaStateObjects [testObject1:GetObjectName ()].isInitPassed_ ~= true then
+        Log:Write (LOG_INFO, "FAILED: Object isn't passed init after GetStatesEngine ():GetState ():Add ()!")
+        return 3
+    end
     
+    local updateEventData = VariantMap ()
+    updateEventData.TimeStep = 1 / 60
+    GetStatesEngine ():Update (StringHash ("Update"), updateEventData)
+    
+    if _G.StatesEngineUtils.LuaStateObjects [testObject1:GetObjectName ()].isUpdatePassed_ ~= true then
+        Log:Write (LOG_INFO, "FAILED: Object isn't passed update after GetStatesEngine ():Update (StringHash (\"Update\"), updateEventData)!")
+        return 4
+    end
+    
+    if string.format ("%.5f", _G.StatesEngineUtils.LuaStateObjects 
+            [testObject1:GetObjectName ()].lastUpdateTimestep_) ~= 
+            string.format ("%.5f", 1 / 60) then
+            
+        Log:Write (LOG_INFO, "FAILED: Object's last update timestep isn't match expected!")
+        return 5
+    end
+    
+    GetStatesEngine ():GetState ():DisposeAll ("LuaStateObject")
+    if _G.StatesEngineUtils.LuaStateObjects [testObject1:GetObjectName ()].isDisposePassed_ ~= true then
+        Log:Write (LOG_INFO, "FAILED: Object isn't passed dispose after GetStatesEngine ():GetState ():DisposeAll (\"LuaStateObject\")!")
+        return 6
+    end
+    
+    GetStatesEngine ():GetState ():RemoveAll ("LuaStateObject", true)
     testObject1:delete ()
-    testObject2:delete ()
-    return 0
+    return 100500
 end

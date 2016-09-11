@@ -84,11 +84,6 @@ function _G.StatesEngineUtils:ReleaseLuaStateObject (name)
     return false;
 end
 
---- Get lua state object instance data table.
-function _G.StatesEngineUtils.GetLuaTable (luaStateObjectInstance)
-    return _G.StatesEngineUtils.LuaStateObjects [luaStateObjectInstance:GetObjectName ()]
-end
-
 _G.StatesEngineUtils.LuaStateObjectInstance = Class ()
 function _G.StatesEngineUtils.LuaStateObjectInstance:Construct ()
     self.ready_ = false
