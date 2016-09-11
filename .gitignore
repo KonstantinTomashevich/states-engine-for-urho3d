@@ -78,8 +78,3 @@ $RECYCLE.BIN/
 # Local files
 *.lnk
 *.user
-
-# Generated files
-BuildConfig.hpp
-tolua_*.cpp
-tolua++.h

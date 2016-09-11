@@ -22,14 +22,16 @@ if (STATES_ENGINE_LUA)
     endforeach ()
     file (WRITE "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/AllStatesEngine.pkg" ${UmbrellaPkgCode})
 
-    # --- Run tolua++ --- #
-    execute_process (COMMAND ${TOLUAXX_EXECUTABLE} -L "ToCppHook.lua" "AllStatesEngine.pkg" WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages" OUTPUT_VARIABLE TOLUAXX_OUTPUT)
+    if (NOT DONT_REGENERATE_LUA_API)
+        # --- Run tolua++ --- #
+        execute_process (COMMAND ${TOLUAXX_EXECUTABLE} -L "ToCppHook.lua" "AllStatesEngine.pkg" WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages" OUTPUT_VARIABLE TOLUAXX_OUTPUT)
 
-    # --- Write tolua++ output--- "
-    if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tolua_AllStatesEngine.cpp")
-        file (REMOVE "${CMAKE_CURRENT_SOURCE_DIR}/tolua_AllStatesEngine.cpp")
+        # --- Write tolua++ output--- "
+        if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tolua_AllStatesEngine.cpp")
+            file (REMOVE "${CMAKE_CURRENT_SOURCE_DIR}/tolua_AllStatesEngine.cpp")
+        endif ()
+        file (WRITE "${CMAKE_CURRENT_SOURCE_DIR}/tolua_AllStatesEngine.cpp" "${TOLUAXX_OUTPUT}")
     endif ()
-    file (WRITE "${CMAKE_CURRENT_SOURCE_DIR}/tolua_AllStatesEngine.cpp" "${TOLUAXX_OUTPUT}")
 endif ()
 
 # --- Generate StatesEngineAll.hpp --- #
