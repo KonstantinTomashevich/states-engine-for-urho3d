@@ -12,15 +12,9 @@ class StateObjectsManager : public StateObject
     void SetIsUseLog (bool isUseLog);
     virtual ~StateObjectsManager ();
 
-    Urho3D::SharedPtr <StateObject> Get (Urho3D::String typeName);
-    void Add (Urho3D::SharedPtr <StateObject> object);
-    bool Remove (Urho3D::SharedPtr <StateObject> object);
-
-    Urho3D::Vector <Urho3D::SharedPtr <StateObject> > *GetAll (Urho3D::String typeName);
     void RemoveAll (Urho3D::String typeName);
 
     bool IsContain (Urho3D::String typeName);
     int CountOf (Urho3D::String typeName);
-    Urho3D::SharedPtr <StateObject> Create (Urho3D::String typeName);
 }
 }

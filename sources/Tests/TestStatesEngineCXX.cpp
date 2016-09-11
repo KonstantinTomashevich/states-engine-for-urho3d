@@ -52,6 +52,11 @@ void TestStatesEngineCXX::Start ()
     statesEngine->GetState <StatesEngine::StateObjectsManager> ()->DisposeAll ("TestObject");
     if (!testObject->IsDisposed ())
         ErrorExit ("Test object dispose don't called!");
+
+    statesEngine->GetState <StatesEngine::StateObjectsManager> ()->RemoveAll ("TestObject");
+    if (statesEngine->GetState <StatesEngine::StateObjectsManager> ()->CountOf ("TestObject") != 0)
+        ErrorExit ("Test object don't removed after RemoveAll (\"TestObject\") call!");
+
     log->Write (Urho3D::LOG_INFO, "All tests passed!");
     engine_->Exit ();
 }
