@@ -8,6 +8,10 @@ if (STATES_ENGINE_LUA)
         set (TOLUAXX_EXECUTABLE ${URHO3D_HOME}/bin/tool/tolua++${CMAKE_EXECUTABLE_SUFFIX})
         message (STATUS "TOLUAXX_EXECUTABLE setted automaticaly from Urho3D home.")
     endif ()
+
+    if (SUDO)
+        set (TOLUAXX_EXECUTABLE "./${TOLUAXX_EXECUTABLE}")
+    endif ()
     message (STATUS "Current TOLUAXX_EXECUTABLE is: ${TOLUAXX_EXECUTABLE}")
 
     # --- Scan for top-level tolua++ packages --- #
