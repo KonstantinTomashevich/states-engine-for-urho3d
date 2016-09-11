@@ -8,7 +8,7 @@ class SceneContainer : public StateObject
     void Set @ SetFromXMLElement (Urho3D::XMLElement source);
     void Set @ SetFromXMLFile (Urho3D::String pathToXML);
     
-    void Lua_Set @ Set (Urho3D::Scene *scene);
+    void Lua_Set @ Set (Urho3D::Scene *scene, bool isKeepPrevious = false);
     Urho3D::Scene *Lua_Get @ Get ();
     Urho3D::SharedPtr <Urho3D::Scene> Get ();
     Urho3D::Node *GetNode (Urho3D::String wayToNode);

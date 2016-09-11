@@ -52,7 +52,7 @@ public:
     virtual ~SceneContainer ();
 
     /// \brief version of SceneContainer::Set for Lua, because Lua don't support Urho3D::SharedPtr's.
-    void Lua_Set (Urho3D::Scene *scene);
+    void Lua_Set (Urho3D::Scene *scene, bool isKeepPrevious = false);
     /// \brief version of SceneContainer::Get for Lua, because Lua don't support Urho3D::SharedPtr's.
     Urho3D::Scene *Lua_Get ();
 };

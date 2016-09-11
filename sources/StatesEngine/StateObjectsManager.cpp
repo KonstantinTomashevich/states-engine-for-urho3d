@@ -55,12 +55,19 @@ void StateObjectsManager::Lua_Add (StateObject *object)
     Add (objectToAdd);
 }
 
-bool StateObjectsManager::Lua_Remove (StateObject *object)
+bool StateObjectsManager::Lua_Remove (StateObject *object, bool dontDelete)
 {
     for (int index = 0; index < objects_.Size (); index++)
         if (objects_.At (index).Get () == object)
         {
-            objects_.Remove (objects_.At (index));
+            if (dontDelete)
+            {
+                Urho3D::SharedPtr <StateObject> temporaryPtr = objects_.At (index);
+                objects_.Remove (objects_.At (index));
+                temporaryPtr.Detach ();
+            }
+            else
+                objects_.Remove (objects_.At (index));
             return true;
         }
     return false;
@@ -83,5 +90,27 @@ Urho3D::Vector <StateObject *> StateObjectsManager::Lua_GetAll (Urho3D::String t
     for (int index = 0; index < sharedPointers.Size (); index++)
         pointers.Push (sharedPointers.At (index).Get ());
     return pointers;
+}
+
+void StateObjectsManager::Lua_RemoveAll(Urho3D::String typeName, bool dontDelete)
+{
+    assert (typeName != Urho3D::String::EMPTY);
+    int index = 0;
+    while (!objects_.Empty () && index < objects_.Size ())
+    {
+        if (objects_.At (index)->GetTypeInfo ()->IsTypeOf (typeName) || typeName == "any")
+        {
+            if (dontDelete)
+            {
+                Urho3D::SharedPtr <StateObject> temporaryPtr = objects_.At (index);
+                objects_.Remove (objects_.At (index));
+                temporaryPtr.Detach ();
+            }
+            else
+                objects_.Remove (objects_.At (index));
+        }
+        else
+            index++;
+    }
 }
 }

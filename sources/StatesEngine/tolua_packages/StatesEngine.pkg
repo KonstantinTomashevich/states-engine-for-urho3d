@@ -10,7 +10,7 @@ class StatesEngineSubsystem : Object
     bool Dispose ();
 
     StateObject *Lua_GetState @ GetState ();
-    void Lua_SetupState @ SetupState (StateObject *state);
+    void Lua_SetupState @ SetupState (StateObject *state, bool isKeepPrevious = false);
     
     bool HasState ();
     void DisposeState ();

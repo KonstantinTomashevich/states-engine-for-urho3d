@@ -16,10 +16,13 @@ void SceneContainer::Set (Urho3D::SharedPtr <Urho3D::Scene> scene)
     scene_ = scene;
 }
 
-void SceneContainer::Lua_Set (Urho3D::Scene *scene)
+void SceneContainer::Lua_Set (Urho3D::Scene *scene, bool isKeepPrevious)
 {
     Urho3D::SharedPtr <Urho3D::Scene> sceneToSet (scene);
+    Urho3D::SharedPtr <Urho3D::Scene> previousScene = Get ();
     Set (sceneToSet);
+    if (isKeepPrevious)
+        previousScene.Detach ();
 }
 
 Urho3D::Scene *SceneContainer::Lua_Get ()

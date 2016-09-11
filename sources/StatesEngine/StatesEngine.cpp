@@ -76,12 +76,15 @@ StateObject *StatesEngineSubsystem::Lua_GetState ()
     return currentState_.Get ();
 }
 
-void StatesEngineSubsystem::Lua_SetupState (StateObject *state)
+void StatesEngineSubsystem::Lua_SetupState (StateObject *state, bool isKeepPrevious)
 {
     if (currentState_.Get () != state)
     {
         Urho3D::SharedPtr <StateObject> newState (state);
+        Urho3D::SharedPtr <StateObject> previousState = GetState ();
         SetupState (newState);
+        if (isKeepPrevious)
+            previousState.Detach ();
     }
 }
 }

@@ -50,6 +50,6 @@ public:
     /// \brief version of StatesEngineSubsystem::GetState for Lua, because Lua don't support Urho3D::SharedPtr's.
     StateObject *Lua_GetState ();
     /// \brief version of StatesEngineSubsystem::SetupState for Lua, because Lua don't support Urho3D::SharedPtr's.
-    void Lua_SetupState (StateObject *state);
+    void Lua_SetupState (StateObject *state, bool isKeepPrevious = false);
 };
 }

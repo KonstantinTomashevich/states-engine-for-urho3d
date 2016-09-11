@@ -772,7 +772,8 @@ static int tolua_AllStatesEngine_StatesEngine_SceneContainer_Set00(lua_State* to
  if (
  !tolua_isusertype(tolua_S,1,"SceneContainer",0,&tolua_err) ||
  !tolua_isusertype(tolua_S,2,"Urho3D::Scene",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
+ !tolua_isboolean(tolua_S,3,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -780,11 +781,12 @@ static int tolua_AllStatesEngine_StatesEngine_SceneContainer_Set00(lua_State* to
  {
   SceneContainer* self = (SceneContainer*)  tolua_tousertype(tolua_S,1,0);
   Urho3D::Scene* scene = ((Urho3D::Scene*)  tolua_tousertype(tolua_S,2,0));
+  bool isKeepPrevious = ((bool)  tolua_toboolean(tolua_S,3,false));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Lua_Set'", NULL);
 #endif
  {
-  self->Lua_Set(scene);
+  self->Lua_Set(scene,isKeepPrevious);
  }
  }
  return 0;
@@ -1847,7 +1849,8 @@ static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Remove00(lua_S
  if (
  !tolua_isusertype(tolua_S,1,"StateObjectsManager",0,&tolua_err) ||
  !tolua_isusertype(tolua_S,2,"StateObject",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
+ !tolua_isboolean(tolua_S,3,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -1855,11 +1858,12 @@ static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Remove00(lua_S
  {
   StateObjectsManager* self = (StateObjectsManager*)  tolua_tousertype(tolua_S,1,0);
   StateObject* object = ((StateObject*)  tolua_tousertype(tolua_S,2,0));
+  bool dontDelete = ((bool)  tolua_toboolean(tolua_S,3,false));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Lua_Remove'", NULL);
 #endif
  {
-  bool tolua_ret = (bool)  self->Lua_Remove(object);
+  bool tolua_ret = (bool)  self->Lua_Remove(object,dontDelete);
  tolua_pushboolean(tolua_S,(bool)tolua_ret);
  }
  }
@@ -1950,7 +1954,7 @@ static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_GetAll00(lua_S
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: RemoveAll of class  StateObjectsManager */
+/* method: Lua_RemoveAll of class  StateObjectsManager */
 #ifndef TOLUA_DISABLE_tolua_AllStatesEngine_StatesEngine_StateObjectsManager_RemoveAll00
 static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_RemoveAll00(lua_State* tolua_S)
 {
@@ -1959,7 +1963,8 @@ static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_RemoveAll00(lu
  if (
  !tolua_isusertype(tolua_S,1,"StateObjectsManager",0,&tolua_err) ||
  !tolua_isurho3dstring(tolua_S,2,0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
+ !tolua_isboolean(tolua_S,3,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -1967,11 +1972,12 @@ static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_RemoveAll00(lu
  {
   StateObjectsManager* self = (StateObjectsManager*)  tolua_tousertype(tolua_S,1,0);
   Urho3D::String typeName = ((Urho3D::String)  tolua_tourho3dstring(tolua_S,2,0));
+  bool dontDelete = ((bool)  tolua_toboolean(tolua_S,3,false));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'RemoveAll'", NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Lua_RemoveAll'", NULL);
 #endif
  {
-  self->RemoveAll(typeName);
+  self->Lua_RemoveAll(typeName,dontDelete);
  }
  }
  return 0;
@@ -2252,7 +2258,8 @@ static int tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_SetupState00
  if (
  !tolua_isusertype(tolua_S,1,"StatesEngineSubsystem",0,&tolua_err) ||
  !tolua_isusertype(tolua_S,2,"StateObject",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
+ !tolua_isboolean(tolua_S,3,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -2260,11 +2267,12 @@ static int tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_SetupState00
  {
   StatesEngineSubsystem* self = (StatesEngineSubsystem*)  tolua_tousertype(tolua_S,1,0);
   StateObject* state = ((StateObject*)  tolua_tousertype(tolua_S,2,0));
+  bool isKeepPrevious = ((bool)  tolua_toboolean(tolua_S,3,false));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Lua_SetupState'", NULL);
 #endif
  {
-  self->Lua_SetupState(state);
+  self->Lua_SetupState(state,isKeepPrevious);
  }
  }
  return 0;
