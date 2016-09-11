@@ -24,7 +24,7 @@ if (STATES_ENGINE_LUA)
     # --- Run tolua++ on each top-level package and generate code for it's include --- #
     foreach (Package ${LuaPackages})
         get_filename_component (PackageName ${Package} NAME_WE)
-        execute_process (COMMAND ${TOLUAXX_EXECUTABLE} -L "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/ToCppHook.lua" -o ${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp ${Package} OUTPUT_VARIABLE TOLUAXX_OUTPUT)
+        execute_process (COMMAND ${SUDO} ${TOLUAXX_EXECUTABLE} -L "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/ToCppHook.lua" -o ${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp ${Package} OUTPUT_VARIABLE TOLUAXX_OUTPUT)
 
         if (TOLUAXX_OUTPUT)
             message (FATAL_ERROR "Error while generating ${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp from ${Package}!\nOutput:\n${TOLUAXX_OUTPUT}")
