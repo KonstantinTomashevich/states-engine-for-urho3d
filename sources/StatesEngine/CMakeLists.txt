@@ -8,10 +8,6 @@ if (STATES_ENGINE_LUA)
         set (TOLUAXX_EXECUTABLE ${URHO3D_HOME}/bin/tool/tolua++${CMAKE_EXECUTABLE_SUFFIX})
         message (STATUS "TOLUAXX_EXECUTABLE setted automaticaly from Urho3D home.")
     endif ()
-
-    if (SUDO)
-        set (TOLUAXX_EXECUTABLE "./${TOLUAXX_EXECUTABLE}")
-    endif ()
     message (STATUS "Current TOLUAXX_EXECUTABLE is: ${TOLUAXX_EXECUTABLE}")
 
     # --- Scan for top-level tolua++ packages --- #
@@ -28,11 +24,14 @@ if (STATES_ENGINE_LUA)
     # --- Run tolua++ on each top-level package and generate code for it's include --- #
     foreach (Package ${LuaPackages})
         get_filename_component (PackageName ${Package} NAME_WE)
-        execute_process (COMMAND ${SUDO} ${TOLUAXX_EXECUTABLE} -L "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/ToCppHook.lua" -o ${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp ${Package} OUTPUT_VARIABLE TOLUAXX_OUTPUT)
+        # --- Execute tolua++ --- #
+        execute_process (COMMAND ${TOLUAXX_EXECUTABLE} -L "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/ToCppHook.lua" ${Package} OUTPUT_VARIABLE TOLUAXX_OUTPUT)
 
-        if (TOLUAXX_OUTPUT)
-            message (FATAL_ERROR "Error while generating ${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp from ${Package}!\nOutput:\n${TOLUAXX_OUTPUT}")
+        # --- Write tolua++ output to file --- "
+        if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp")
+            file (REMOVE "${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp")
         endif ()
+        file (WRITE "${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp" "${TOLUAXX_OUTPUT}")
 
         set (PerPackageEnableHeader "${PerPackageEnableHeader}void Enable${PackageName} (Urho3D::LuaScript *luaScript);\n")
         set (PackagesCXXHeadersInclude "${PackagesCXXHeadersInclude}#include \"${PackageName}.hpp\"\n")

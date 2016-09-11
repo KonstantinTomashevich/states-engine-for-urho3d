@@ -16,7 +16,7 @@ script:
 - mkdir build 
 - cd build 
 - echo $URHO3D_HOME
-- sudo cmake .. -DSTATES_ENGINE_ENABLE_TESTING=1 -DSTATES_ENGINE_LUA=1 -DTOLUA_DEBUG=1 -DSUDO=sudo
+- sudo cmake .. -DSTATES_ENGINE_ENABLE_TESTING=1 -DSTATES_ENGINE_LUA=1 -DTOLUA_DEBUG=1
 
 # List contents of generated directory
 - cd ..
