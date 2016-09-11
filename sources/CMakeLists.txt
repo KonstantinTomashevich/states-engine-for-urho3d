@@ -1,4 +1,4 @@
-﻿include_directories (${CMAKE_CURRENT_SOURCE_DIR}/)
+include_directories (${CMAKE_CURRENT_SOURCE_DIR}/)
 add_subdirectory (StatesEngine)
 if (STATES_ENGINE_ENABLE_TESTING)
     add_subdirectory (Tests)

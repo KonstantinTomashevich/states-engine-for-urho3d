@@ -1,4 +1,4 @@
-﻿# Set project name
+# Set project name
 project (StatesEngine)
 ######################################
 # Set minimum version
