@@ -31,5 +31,5 @@ after_failure:
 - cd StatesEngine
 - ls
 - filesize="$(stat -c%s "tolua_AllStatesEngine.cpp")"
-- echo #filesize
+- echo $filesize
 - cat tolua_AllStatesEngine.cpp
