@@ -16,6 +16,7 @@ script:
 - cd build 
 - echo $URHO3D_HOME
 - cmake .. -DSTATES_ENGINE_ENABLE_TESTING=1 -DSTATES_ENGINE_LUA=1 -DTOLUA_DEBUG=1
+- cat ../sources/StatesEngine/tolua_AllStatesEngine.cpp
 - make 
 - make test
 after_failure:
