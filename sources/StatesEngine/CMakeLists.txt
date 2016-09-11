@@ -24,8 +24,11 @@ if (STATES_ENGINE_LUA)
     # --- Run tolua++ on each top-level package and generate code for it's include --- #
     foreach (Package ${LuaPackages})
         get_filename_component (PackageName ${Package} NAME_WE)
-        execute_process (COMMAND ${TOLUAXX_EXECUTABLE} -L "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/ToCppHook.lua" -o ${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp ${Package})
-        message (STATUS "Generated ${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp from ${Package}!")
+        execute_process (COMMAND ${TOLUAXX_EXECUTABLE} -L "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/ToCppHook.lua" -o ${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp ${Package} OUTPUT_VARIABLE TOLUAXX_OUTPUT)
+
+        if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp")
+            message (FATAL_ERROR "Error while generating ${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp from ${Package}!\nOutput:\n${TOLUAXX_OUTPUT}")
+        endif ()
 
         set (PerPackageEnableHeader "${PerPackageEnableHeader}void Enable${PackageName} (Urho3D::LuaScript *luaScript);\n")
         set (PackagesCXXHeadersInclude "${PackagesCXXHeadersInclude}#include \"${PackageName}.hpp\"\n")
