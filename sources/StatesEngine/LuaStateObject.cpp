@@ -193,39 +193,25 @@ void LuaStateObject::SetParent (StateObject *parent)
 
 void LuaStateObject::CreateObject (Urho3D::String luaTypeName, Urho3D::String arguments)
 {
-    Urho3D::LuaFunction *checker = luaScript_->GetFunction ("_G.StatesEngineUtils.IsLuaStateObjectExists");
-    assert (checker);
     Urho3D::String preferedName = CreateLuaPreferedName (luaTypeName);
     Urho3D::String resultingName;
     int lastIndex = -1;
 
-    if (checker)
+    do
     {
-        do
-        {
-            lastIndex++;
-            resultingName = preferedName + Urho3D::String (lastIndex);
+        lastIndex++;
+        resultingName = preferedName + Urho3D::String (lastIndex);
 
-            if (!checker->BeginCall ())
-            {
-                assert (false);
-                return;
-            }
-            checker->PushString ("nothing");
-            checker->PushString (resultingName);
-            if (!checker->EndCall (1))
-            {
-                assert (false);
-                return;
-            }
-        }
-        while (lua_tointeger (luaScript_->GetState (), -1) == 1);
-
-        luaObjectName_ = resultingName;
-        Urho3D::String luaCommand = "_G.StatesEngineUtils.LuaStateObjects." + luaObjectName_ +
-                " = " + luaTypeName + "(" + arguments + ")";
-        luaScript_->ExecuteString (luaCommand);
+        lua_getglobal (luaScript_->GetState (), "StatesEngineUtils");
+        lua_getfield (luaScript_->GetState (), -1, "LuaStateObjects");
+        lua_getfield (luaScript_->GetState (), -1, resultingName.CString ());
     }
+    while (lua_istable (luaScript_->GetState (), -1));
+
+    luaObjectName_ = resultingName;
+    Urho3D::String luaCommand = "_G.StatesEngineUtils.LuaStateObjects." + luaObjectName_ +
+            " = " + luaTypeName + "(" + arguments + ")";
+    luaScript_->ExecuteString (luaCommand);
 }
 
 Urho3D::String LuaStateObject::GetObjectName ()
@@ -238,53 +224,17 @@ bool LuaStateObject::IsObjectNotNull ()
     if (luaObjectName_ == "")
         return false;
 
-    Urho3D::LuaFunction *checker = luaScript_->GetFunction ("_G.StatesEngineUtils.IsLuaStateObjectExists");
-    assert (checker);
-    if (checker)
-    {
-        if (!checker->BeginCall ())
-        {
-            assert (false);
-            return false;
-        }
-        checker->PushString ("nothing");
-        checker->PushString (luaObjectName_);
-        if (!checker->EndCall (1))
-        {
-            assert (false);
-            return false;
-        }
-        return lua_toboolean (luaScript_->GetState (), 0);
-    }
-    else
-        return false;
+    lua_getglobal (luaScript_->GetState (), "StatesEngineUtils");
+    lua_getfield (luaScript_->GetState (), -1, "LuaStateObjects");
+    lua_getfield (luaScript_->GetState (), -1, luaObjectName_.CString ());
+    return (lua_istable (luaScript_->GetState (), -1));
 }
 
 void LuaStateObject::ReleaseLuaObject ()
 {
-    if (luaObjectName_ != "")
-    {
-        Urho3D::LuaFunction *releaser = luaScript_->GetFunction ("_G.StatesEngineUtils.ReleaseLuaStateObject");
-        assert (releaser);
-        if (releaser)
-        {
-            if (!releaser->BeginCall ())
-            {
-                assert (false);
-                return;
-            }
-            releaser->PushString ("nothing");
-            releaser->PushString (luaObjectName_);
-            if (!releaser->EndCall (1))
-            {
-                assert (false);
-                return;
-            }
-            bool result = lua_toboolean (luaScript_->GetState (), 0);
-            if (result)
-                luaObjectName_ = "";
-        }
-    }
+    Urho3D::String luaCommand = "_G.StatesEngineUtils.LuaStateObjects." + luaObjectName_ + " = nil";
+    luaScript_->ExecuteString (luaCommand);
+    luaObjectName_ = "";
 }
 
 LuaStateObject::~LuaStateObject ()

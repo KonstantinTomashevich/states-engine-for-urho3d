@@ -62,28 +62,6 @@ _G.StatesEngineUtils.Events.OnStateStateObjectRemovedFromHub.P_HUB = "Hub"
 --- Create table for lua state objects instances.
 _G.StatesEngineUtils.LuaStateObjects = {}
 
---- ! Can be removed later !
---- ! Used by C++ !
---- Check is lua instance exists, for LuaStateObject internal use.
-function _G.StatesEngineUtils:IsLuaStateObjectExists (name)
-    if type (_G.StatesEngineUtils.LuaStateObjects [name]) ~= "nil" then
-        return 1
-    else
-        return 0
-    end
-end
-
---- ! Can be removed later !
---- ! Used by C++ !
---- Delete lua instance if it in lua instances table.
-function _G.StatesEngineUtils:ReleaseLuaStateObject (name)
-    if _G.StatesEngineUtils.IsLuaStateObjectExists (name) == 1 then
-        _G.StatesEngineUtils.LuaStateObjects [name] = nil
-        return true;
-    end
-    return false;
-end
-
 _G.StatesEngineUtils.LuaStateObjectInstance = Class ()
 function _G.StatesEngineUtils.LuaStateObjectInstance:Construct ()
     self.ready_ = false
