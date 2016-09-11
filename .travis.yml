@@ -29,5 +29,6 @@ after_failure:
 - cd ..
 - cd sources
 - cd StatesEngine
+- mv tolua_AllStatesEngine.cpp tolua_AllStatesEngine.txt
 - ls
-- cat tolua_AllStatesEngine.cpp
+- cat tolua_AllStatesEngine.txt
