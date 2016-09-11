@@ -25,6 +25,7 @@ if (STATES_ENGINE_LUA)
     foreach (Package ${LuaPackages})
         get_filename_component (PackageName ${Package} NAME_WE)
         execute_process (COMMAND ${TOLUAXX_EXECUTABLE} -L "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/ToCppHook.lua" -o ${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp ${Package})
+        message (STATUS "Generated ${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp from ${Package}!")
 
         set (PerPackageEnableHeader "${PerPackageEnableHeader}void Enable${PackageName} (Urho3D::LuaScript *luaScript);\n")
         set (PackagesCXXHeadersInclude "${PackagesCXXHeadersInclude}#include \"${PackageName}.hpp\"\n")
@@ -36,9 +37,6 @@ if (STATES_ENGINE_LUA)
         # --- Execute special setup code for package if needed --- #
         if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/__init.${PackageName}.lua")
             file (COPY "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/__init.${PackageName}.lua" DESTINATION "${CMAKE_SOURCE_DIR}/bin/Data/ToLuaPackagesInitializers")
-            #file (READ "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/__init.${PackageName}.lua" luaEnablerCode)
-            #string (REPLACE "\"" "\\\"" luaEnablerCode ${luaEnablerCode})
-            #string (REPLACE "\n" "\\n\"\n                              \"" luaEnablerCode ${luaEnablerCode})
 
             set (EnablersAndInitializerCode "${EnablersAndInitializerCode}\nvoid LuaInit${PackageName} (Urho3D::LuaScript *luaScript)\n{\n")
             set (EnablersAndInitializerCode "${EnablersAndInitializerCode}    luaScript->ExecuteFile (\"ToLuaPackagesInitializers/__init.${PackageName}.lua\");\n}\n")

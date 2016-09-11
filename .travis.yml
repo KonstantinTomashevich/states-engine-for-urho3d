@@ -29,3 +29,11 @@ after_failure:
 - cd ..
 - cd bin
 - cat Urho3D.log
+- cd ..
+- cd ..
+- cd sources
+- ls
+- cd StatesEngine
+- ls
+- cd generated
+- ls
