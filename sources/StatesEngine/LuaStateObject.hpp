@@ -41,7 +41,7 @@ public:
     void CreateObject (Urho3D::String luaTypeName, Urho3D::String arguments = "");
     Urho3D::String GetObjectName ();
     bool IsObjectNotNull ();
-    void ReleaseLuaObject ();
+    void ReleaseObject ();
     virtual ~LuaStateObject ();
 };
 }

@@ -575,9 +575,9 @@ static int tolua_AllStatesEngine_StatesEngine_LuaStateObject_IsObjectNotNull00(l
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: ReleaseLuaObject of class  LuaStateObject */
-#ifndef TOLUA_DISABLE_tolua_AllStatesEngine_StatesEngine_LuaStateObject_ReleaseLuaObject00
-static int tolua_AllStatesEngine_StatesEngine_LuaStateObject_ReleaseLuaObject00(lua_State* tolua_S)
+/* method: ReleaseObject of class  LuaStateObject */
+#ifndef TOLUA_DISABLE_tolua_AllStatesEngine_StatesEngine_LuaStateObject_ReleaseObject00
+static int tolua_AllStatesEngine_StatesEngine_LuaStateObject_ReleaseObject00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
@@ -591,16 +591,16 @@ static int tolua_AllStatesEngine_StatesEngine_LuaStateObject_ReleaseLuaObject00(
  {
   LuaStateObject* self = (LuaStateObject*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReleaseLuaObject'", NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ReleaseObject'", NULL);
 #endif
  {
-  self->ReleaseLuaObject();
+  self->ReleaseObject();
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'ReleaseLuaObject'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'ReleaseObject'.",&tolua_err);
  return 0;
 #endif
 }
@@ -2467,7 +2467,7 @@ TOLUA_API int tolua_AllStatesEngine_open (lua_State* tolua_S)
    tolua_function(tolua_S,"CreateObject",tolua_AllStatesEngine_StatesEngine_LuaStateObject_CreateObject00);
    tolua_function(tolua_S,"GetObjectName",tolua_AllStatesEngine_StatesEngine_LuaStateObject_GetObjectName00);
    tolua_function(tolua_S,"IsObjectNotNull",tolua_AllStatesEngine_StatesEngine_LuaStateObject_IsObjectNotNull00);
-   tolua_function(tolua_S,"ReleaseLuaObject",tolua_AllStatesEngine_StatesEngine_LuaStateObject_ReleaseLuaObject00);
+   tolua_function(tolua_S,"ReleaseObject",tolua_AllStatesEngine_StatesEngine_LuaStateObject_ReleaseObject00);
    tolua_function(tolua_S,"delete",tolua_AllStatesEngine_StatesEngine_LuaStateObject_delete00);
   tolua_endmodule(tolua_S);
  tolua_endmodule(tolua_S);

@@ -83,7 +83,14 @@ void LuaStateObject::lua_SetParent ()
     lua_getglobal (luaScript_->GetState (), "StatesEngineUtils");
     lua_getfield (luaScript_->GetState (), -1, "LuaStateObjects");
     lua_getfield (luaScript_->GetState (), -1, luaObjectName_.CString ());
-    tolua_pushusertype (luaScript_->GetState (), parent_, GetTypeName ().CString ());
+
+    Urho3D::String parentTypeName;
+    if (parent_)
+        parentTypeName = parent_->GetTypeName ();
+    else
+        parentTypeName = "nil";
+
+    tolua_pushusertype (luaScript_->GetState (), parent_, parentTypeName.CString ());
     lua_setfield (luaScript_->GetState (), -2, "parent_");
 }
 
@@ -230,7 +237,7 @@ bool LuaStateObject::IsObjectNotNull ()
     return (lua_istable (luaScript_->GetState (), -1));
 }
 
-void LuaStateObject::ReleaseLuaObject ()
+void LuaStateObject::ReleaseObject ()
 {
     Urho3D::String luaCommand = "_G.StatesEngineUtils.LuaStateObjects." + luaObjectName_ + " = nil";
     luaScript_->ExecuteString (luaCommand);

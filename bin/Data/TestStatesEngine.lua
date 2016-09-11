@@ -49,14 +49,19 @@ function TestStatesEngine ()
     testObject1:CreateObject ("_G.TestObject", "\"Hello, world!\"")
     GetStatesEngine ():GetState ():Add (testObject1)
     
+    if _G.StatesEngineUtils.LuaStateObjects [testObject1:GetObjectName ()].parent_ ~= GetStatesEngine ():GetState () then
+        Log:Write (LOG_INFO, "FAILED: Object's parent isn't equal to GetStatesEngine ():GetState ()!")
+        return 3
+    end
+    
     if _G.StatesEngineUtils.LuaStateObjects [testObject1:GetObjectName ()].ready_ ~= true then
         Log:Write (LOG_INFO, "FAILED: Object isn't ready after GetStatesEngine ():GetState ():Add ()!")
-        return 2
+        return 4
     end
     
     if _G.StatesEngineUtils.LuaStateObjects [testObject1:GetObjectName ()].isInitPassed_ ~= true then
         Log:Write (LOG_INFO, "FAILED: Object isn't passed init after GetStatesEngine ():GetState ():Add ()!")
-        return 3
+        return 5
     end
     
     local updateEventData = VariantMap ()
@@ -65,7 +70,7 @@ function TestStatesEngine ()
     
     if _G.StatesEngineUtils.LuaStateObjects [testObject1:GetObjectName ()].isUpdatePassed_ ~= true then
         Log:Write (LOG_INFO, "FAILED: Object isn't passed update after GetStatesEngine ():Update (StringHash (\"Update\"), updateEventData)!")
-        return 4
+        return 6
     end
     
     if string.format ("%.5f", _G.StatesEngineUtils.LuaStateObjects 
@@ -73,16 +78,27 @@ function TestStatesEngine ()
             string.format ("%.5f", 1 / 60) then
             
         Log:Write (LOG_INFO, "FAILED: Object's last update timestep isn't match expected!")
-        return 5
+        return 7
     end
     
     GetStatesEngine ():GetState ():DisposeAll ("LuaStateObject")
     if _G.StatesEngineUtils.LuaStateObjects [testObject1:GetObjectName ()].isDisposePassed_ ~= true then
         Log:Write (LOG_INFO, "FAILED: Object isn't passed dispose after GetStatesEngine ():GetState ():DisposeAll (\"LuaStateObject\")!")
-        return 6
+        return 8
+    end
+    GetStatesEngine ():GetState ():RemoveAll ("LuaStateObject", true)
+    
+    if testObject1:IsObjectNotNull () ~= true then
+        Log:Write (LOG_INFO, "FAILED: Object is nil now!")
+        return 9
     end
     
-    GetStatesEngine ():GetState ():RemoveAll ("LuaStateObject", true)
+    testObject1:ReleaseObject ()
+    if testObject1:IsObjectNotNull () ~= false then
+        Log:Write (LOG_INFO, "FAILED: Object isn't nil after ReleaseObject ()!")
+        return 10
+    end
+    
     testObject1:delete ()
     return 100500
 end
