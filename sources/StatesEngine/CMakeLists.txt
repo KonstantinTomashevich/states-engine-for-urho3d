@@ -26,7 +26,7 @@ if (STATES_ENGINE_LUA)
         get_filename_component (PackageName ${Package} NAME_WE)
         execute_process (COMMAND ${TOLUAXX_EXECUTABLE} -L "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/ToCppHook.lua" -o ${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp ${Package} OUTPUT_VARIABLE TOLUAXX_OUTPUT)
 
-        if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp")
+        if (TOLUAXX_OUTPUT)
             message (FATAL_ERROR "Error while generating ${CMAKE_CURRENT_SOURCE_DIR}/generated/tolua_${PackageName}.cpp from ${Package}!\nOutput:\n${TOLUAXX_OUTPUT}")
         endif ()
 
