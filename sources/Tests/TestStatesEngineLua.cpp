@@ -46,8 +46,8 @@ void TestStatesEngineLua::Start ()
 
     int testReturn = lua_tointeger (luaScript->GetState (), -1);
     log->Write (Urho3D::LOG_INFO, Urho3D::String ("Script return: ") + Urho3D::String (testReturn));
-    //if (testReturn != 100500)
-    //    ErrorExit (Urho3D::String ("Script return is ") + Urho3D::String (testReturn) + ", but it will be 100500!");
+    if (testReturn != 100500)
+        ErrorExit (Urho3D::String ("Script return is ") + Urho3D::String (testReturn) + ", but it will be 100500!");
     engine_->Exit ();
 }
 
