@@ -1,4 +1,4 @@
-﻿#include "StateObjectsManager.hpp"
+#include "StateObjectsManager.hpp"
 #include "BuildConfig.hpp"
 namespace StatesEngine
 {
@@ -42,5 +42,46 @@ StateObjectsManager::~StateObjectsManager ()
 {
     Dispose ();
     RemoveAll ("any");
+}
+
+StateObject *StateObjectsManager::Lua_Get (Urho3D::String typeName)
+{
+    return Get (typeName).Get ();
+}
+
+void StateObjectsManager::Lua_Add (StateObject *object)
+{
+    Urho3D::SharedPtr <StateObject> objectToAdd (object);
+    Add (objectToAdd);
+}
+
+bool StateObjectsManager::Lua_Remove (StateObject *object)
+{
+    for (int index = 0; index < objects_.Size (); index++)
+        if (objects_.At (index).Get () == object)
+        {
+            objects_.Remove (objects_.At (index));
+            return true;
+        }
+    return false;
+}
+
+StateObject *StateObjectsManager::Lua_Create (Urho3D::String typeName)
+{
+    Urho3D::SharedPtr <StateObject> created = Create (typeName);
+    return created.Get ();
+}
+
+Urho3D::Vector <StateObject *> StateObjectsManager::Lua_GetAll (Urho3D::String typeName)
+{
+    Urho3D::Vector <StateObject *> pointers;
+    Urho3D::Vector <Urho3D::SharedPtr <StateObject> > sharedPointers = GetAll (typeName);
+
+    if (sharedPointers.Empty ())
+        return pointers;
+
+    for (int index = 0; index < sharedPointers.Size (); index++)
+        pointers.Push (sharedPointers.At (index).Get ());
+    return pointers;
 }
 }

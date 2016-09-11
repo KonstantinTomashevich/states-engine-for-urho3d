@@ -1,4 +1,4 @@
-﻿#include "SceneContainer.hpp"
+#include "SceneContainer.hpp"
 #include <Urho3D/Resource/ResourceCache.h>
 #include <Urho3D/Resource/XMLFile.h>
 #include <Urho3D/Graphics/Renderer.h>
@@ -14,6 +14,17 @@ SceneContainer::SceneContainer (Urho3D::Context *context) : StateObject (context
 void SceneContainer::Set (Urho3D::SharedPtr <Urho3D::Scene> scene)
 {
     scene_ = scene;
+}
+
+void SceneContainer::Lua_Set (Urho3D::Scene *scene)
+{
+    Urho3D::SharedPtr <Urho3D::Scene> sceneToSet (scene);
+    Set (sceneToSet);
+}
+
+Urho3D::Scene *SceneContainer::Lua_Get ()
+{
+    return scene_.Get ();
 }
 
 void SceneContainer::Set (Urho3D::XMLElement source)

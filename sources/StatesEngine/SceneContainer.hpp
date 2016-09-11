@@ -15,19 +15,19 @@ class SceneContainer : public StateObject
 {
 URHO3D_OBJECT (SceneContainer, StateObject)
 protected:
-    /// Pointer to scene.
+    /// \brief Pointer to scene.
     Urho3D::SharedPtr <Urho3D::Scene> scene_;
 public:
     SceneContainer (Urho3D::Context *context);
-    /// Set scene.
+    /// \brief Set scene.
     void Set (Urho3D::SharedPtr <Urho3D::Scene> scene);
-    /// Loads scene from specified xml file.
+    /// \brief Loads scene from specified xml file.
     void Set (Urho3D::XMLElement source);
-    /// Loads scene from xml file from specified path.
+    /// \brief Loads scene from xml file from specified path.
     void Set (Urho3D::String pathToXML);
-    /// Returns *scene_*.
+    /// \brief Returns *scene_*.
     Urho3D::SharedPtr <Urho3D::Scene> Get ();
-    /// Returns scene node by literal way. Way will be look like "/nameOfParent2Node/nameOfParent1Node/nameOfNode/".
+    /// \brief Returns scene node by literal way. Way will be look like "/nameOfParent2Node/nameOfParent1Node/nameOfNode/".
     Urho3D::Node *GetNode (Urho3D::String wayToNode);
 
     ///  \brief Setups scene viewport.
@@ -44,11 +44,16 @@ public:
     ///  \param [in] shadowMapSize size of shadow map for light rendering.
     void SetupSceneViewport (int index, Urho3D::String wayToCameraNode, Urho3D::IntRect rectangle, int shadowMapSize = 1024);
 
-    /// Releases shared pointer.
+    /// \brief Releases shared pointer.
     void Release ();
     virtual bool Init ();
     virtual bool Update (float timeStep);
     virtual bool Dispose ();
     virtual ~SceneContainer ();
+
+    /// \brief version of SceneContainer::Set for Lua, because Lua don't support Urho3D::SharedPtr's.
+    void Lua_Set (Urho3D::Scene *scene);
+    /// \brief version of SceneContainer::Get for Lua, because Lua don't support Urho3D::SharedPtr's.
+    Urho3D::Scene *Lua_Get ();
 };
 }

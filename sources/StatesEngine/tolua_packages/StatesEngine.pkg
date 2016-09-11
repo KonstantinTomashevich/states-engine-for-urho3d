@@ -9,13 +9,12 @@ class StatesEngineSubsystem : Object
     void Update (Urho3D::StringHash eventType, Urho3D::VariantMap& info);
     bool Dispose ();
 
-    // template <class T> T* GetState ();
-    StateObject *GetState ();
+    StateObject *Lua_GetState @ GetState ();
+    void Lua_SetupState @ SetupState (StateObject *state);
+    
     bool HasState ();
     void DisposeState ();
     bool IsState (Urho3D::String typeName);
-
-    void SetupState (Urho3D::SharedPtr <StateObject> state);
     static StatesEngineSubsystem *GetInstance ();
     ~StatesEngineSubsystem ();
 }

@@ -70,4 +70,18 @@ StatesEngineSubsystem::~StatesEngineSubsystem ()
 {
     Dispose ();
 }
+
+StateObject *StatesEngineSubsystem::Lua_GetState ()
+{
+    return currentState_.Get ();
+}
+
+void StatesEngineSubsystem::Lua_SetupState (StateObject *state)
+{
+    if (currentState_.Get () != state)
+    {
+        Urho3D::SharedPtr <StateObject> newState (state);
+        SetupState (newState);
+    }
+}
 }

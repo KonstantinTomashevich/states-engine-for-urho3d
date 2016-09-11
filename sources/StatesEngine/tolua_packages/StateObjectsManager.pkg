@@ -12,8 +12,12 @@ class StateObjectsManager : public StateObject
     void SetIsUseLog (bool isUseLog);
     virtual ~StateObjectsManager ();
 
+    StateObject *Lua_Get @ Get (Urho3D::String typeName);
+    void Lua_Add @ Add (StateObject *object);
+    bool Lua_Remove @ Remove (StateObject *object);
+    StateObject *Lua_Create @ Create (Urho3D::String typeName);
+    Urho3D::Vector <StateObject *> Lua_GetAll @ GetAll (Urho3D::String typeName);
     void RemoveAll (Urho3D::String typeName);
-
     bool IsContain (Urho3D::String typeName);
     int CountOf (Urho3D::String typeName);
 }

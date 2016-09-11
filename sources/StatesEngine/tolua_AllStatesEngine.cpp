@@ -66,9 +66,9 @@ static int tolua_collect_LuaStateObject (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_StatesEngineSubsystem (lua_State* tolua_S)
+static int tolua_collect_StateObjectsManager (lua_State* tolua_S)
 {
- StatesEngineSubsystem* self = (StatesEngineSubsystem*) tolua_tousertype(tolua_S,1,0);
+ StateObjectsManager* self = (StateObjectsManager*) tolua_tousertype(tolua_S,1,0);
  Mtolua_delete(self);
  return 0;
 }
@@ -80,16 +80,16 @@ static int tolua_collect_SceneContainer (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_Urho3D__SharedPtr_StateObject_ (lua_State* tolua_S)
+static int tolua_collect_StatesEngineSubsystem (lua_State* tolua_S)
 {
- Urho3D::SharedPtr<StateObject>* self = (Urho3D::SharedPtr<StateObject>*) tolua_tousertype(tolua_S,1,0);
+ StatesEngineSubsystem* self = (StatesEngineSubsystem*) tolua_tousertype(tolua_S,1,0);
  Mtolua_delete(self);
  return 0;
 }
 
-static int tolua_collect_StateObjectsManager (lua_State* tolua_S)
+static int tolua_collect_Urho3D__Vector_StateObject__ (lua_State* tolua_S)
 {
- StateObjectsManager* self = (StateObjectsManager*) tolua_tousertype(tolua_S,1,0);
+ Urho3D::Vector<StateObject*>* self = (Urho3D::Vector<StateObject*>*) tolua_tousertype(tolua_S,1,0);
  Mtolua_delete(self);
  return 0;
 }
@@ -111,17 +111,17 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"Urho3D::IntRect");
  tolua_usertype(tolua_S,"Urho3D::Context");
  tolua_usertype(tolua_S,"SceneContainer");
- tolua_usertype(tolua_S,"Urho3D::SharedPtr<StateObject>");
- tolua_usertype(tolua_S,"Urho3D::XMLElement");
- tolua_usertype(tolua_S,"Urho3D::Vector<Urho3D::SharedPtr<StateObject> >");
+ tolua_usertype(tolua_S,"Urho3D::SharedPtr<Urho3D::Scene>");
+ tolua_usertype(tolua_S,"Urho3D::Vector<StateObject*>");
+ tolua_usertype(tolua_S,"StateObjectsManager");
  tolua_usertype(tolua_S,"StateObject");
  tolua_usertype(tolua_S,"LuaStateObject");
  tolua_usertype(tolua_S,"Urho3D::Node");
- tolua_usertype(tolua_S,"StateObjectsManager");
+ tolua_usertype(tolua_S,"Urho3D::Scene");
  tolua_usertype(tolua_S,"Object");
  tolua_usertype(tolua_S,"StatesEngineSubsystem");
  tolua_usertype(tolua_S,"Context");
- tolua_usertype(tolua_S,"Urho3D::SharedPtr<Urho3D::Scene>");
+ tolua_usertype(tolua_S,"Urho3D::XMLElement");
 }
 
 /* method: new of class  LuaStateObject */
@@ -698,42 +698,10 @@ static int tolua_AllStatesEngine_StatesEngine_SceneContainer_new00_local(lua_Sta
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: Set of class  SceneContainer */
-#ifndef TOLUA_DISABLE_tolua_AllStatesEngine_StatesEngine_SceneContainer_Set00
-static int tolua_AllStatesEngine_StatesEngine_SceneContainer_Set00(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_AllStatesEngine_StatesEngine_SceneContainer_SetFromXMLElement00
+static int tolua_AllStatesEngine_StatesEngine_SceneContainer_SetFromXMLElement00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"SceneContainer",0,&tolua_err) ||
- (tolua_isvaluenil(tolua_S,2,&tolua_err) || !tolua_isusertype(tolua_S,2,"Urho3D::SharedPtr<Urho3D::Scene>",0,&tolua_err)) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  SceneContainer* self = (SceneContainer*)  tolua_tousertype(tolua_S,1,0);
-  Urho3D::SharedPtr<Urho3D::Scene> scene = *((Urho3D::SharedPtr<Urho3D::Scene>*)  tolua_tousertype(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Set'", NULL);
-#endif
- {
-  self->Set(scene);
- }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'Set'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: Set of class  SceneContainer */
-#ifndef TOLUA_DISABLE_tolua_AllStatesEngine_StatesEngine_SceneContainer_Set01
-static int tolua_AllStatesEngine_StatesEngine_SceneContainer_Set01(lua_State* tolua_S)
-{
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"SceneContainer",0,&tolua_err) ||
@@ -742,6 +710,7 @@ static int tolua_AllStatesEngine_StatesEngine_SceneContainer_Set01(lua_State* to
  )
  goto tolua_lerror;
  else
+#endif
  {
   SceneContainer* self = (SceneContainer*)  tolua_tousertype(tolua_S,1,0);
   Urho3D::XMLElement source = *((Urho3D::XMLElement*)  tolua_tousertype(tolua_S,2,0));
@@ -753,15 +722,19 @@ static int tolua_AllStatesEngine_StatesEngine_SceneContainer_Set01(lua_State* to
  }
  }
  return 0;
-tolua_lerror:
- return tolua_AllStatesEngine_StatesEngine_SceneContainer_Set00(tolua_S);
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'SetFromXMLElement'.",&tolua_err);
+ return 0;
+#endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
 /* method: Set of class  SceneContainer */
-#ifndef TOLUA_DISABLE_tolua_AllStatesEngine_StatesEngine_SceneContainer_Set02
-static int tolua_AllStatesEngine_StatesEngine_SceneContainer_Set02(lua_State* tolua_S)
+#ifndef TOLUA_DISABLE_tolua_AllStatesEngine_StatesEngine_SceneContainer_SetFromXMLFile00
+static int tolua_AllStatesEngine_StatesEngine_SceneContainer_SetFromXMLFile00(lua_State* tolua_S)
 {
+#ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"SceneContainer",0,&tolua_err) ||
@@ -770,6 +743,7 @@ static int tolua_AllStatesEngine_StatesEngine_SceneContainer_Set02(lua_State* to
  )
  goto tolua_lerror;
  else
+#endif
  {
   SceneContainer* self = (SceneContainer*)  tolua_tousertype(tolua_S,1,0);
   Urho3D::String pathToXML = ((Urho3D::String)  tolua_tourho3dstring(tolua_S,2,0));
@@ -781,12 +755,48 @@ static int tolua_AllStatesEngine_StatesEngine_SceneContainer_Set02(lua_State* to
  }
  }
  return 0;
-tolua_lerror:
- return tolua_AllStatesEngine_StatesEngine_SceneContainer_Set01(tolua_S);
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'SetFromXMLFile'.",&tolua_err);
+ return 0;
+#endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: Get of class  SceneContainer */
+/* method: Lua_Set of class  SceneContainer */
+#ifndef TOLUA_DISABLE_tolua_AllStatesEngine_StatesEngine_SceneContainer_Set00
+static int tolua_AllStatesEngine_StatesEngine_SceneContainer_Set00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"SceneContainer",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"Urho3D::Scene",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  SceneContainer* self = (SceneContainer*)  tolua_tousertype(tolua_S,1,0);
+  Urho3D::Scene* scene = ((Urho3D::Scene*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Lua_Set'", NULL);
+#endif
+ {
+  self->Lua_Set(scene);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'Set'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: Lua_Get of class  SceneContainer */
 #ifndef TOLUA_DISABLE_tolua_AllStatesEngine_StatesEngine_SceneContainer_Get00
 static int tolua_AllStatesEngine_StatesEngine_SceneContainer_Get00(lua_State* tolua_S)
 {
@@ -799,6 +809,36 @@ static int tolua_AllStatesEngine_StatesEngine_SceneContainer_Get00(lua_State* to
  goto tolua_lerror;
  else
 #endif
+ {
+  SceneContainer* self = (SceneContainer*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Lua_Get'", NULL);
+#endif
+ {
+  Urho3D::Scene* tolua_ret = (Urho3D::Scene*)  self->Lua_Get();
+  tolua_pushusertype(tolua_S,(void*)tolua_ret,"Urho3D::Scene");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'Get'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: Get of class  SceneContainer */
+#ifndef TOLUA_DISABLE_tolua_AllStatesEngine_StatesEngine_SceneContainer_Get01
+static int tolua_AllStatesEngine_StatesEngine_SceneContainer_Get01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"SceneContainer",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
  {
   SceneContainer* self = (SceneContainer*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
@@ -820,11 +860,8 @@ static int tolua_AllStatesEngine_StatesEngine_SceneContainer_Get00(lua_State* to
  }
  }
  return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'Get'.",&tolua_err);
- return 0;
-#endif
+tolua_lerror:
+ return tolua_AllStatesEngine_StatesEngine_SceneContainer_Get00(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -1734,7 +1771,7 @@ static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_delete00(lua_S
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: Get of class  StateObjectsManager */
+/* method: Lua_Get of class  StateObjectsManager */
 #ifndef TOLUA_DISABLE_tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Get00
 static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Get00(lua_State* tolua_S)
 {
@@ -1752,21 +1789,11 @@ static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Get00(lua_Stat
   StateObjectsManager* self = (StateObjectsManager*)  tolua_tousertype(tolua_S,1,0);
   Urho3D::String typeName = ((Urho3D::String)  tolua_tourho3dstring(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Get'", NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Lua_Get'", NULL);
 #endif
  {
-  Urho3D::SharedPtr<StateObject> tolua_ret = (Urho3D::SharedPtr<StateObject>)  self->Get(typeName);
- {
-#ifdef __cplusplus
- void* tolua_obj = Mtolua_new((Urho3D::SharedPtr<StateObject>)(tolua_ret));
-  tolua_pushusertype(tolua_S,tolua_obj,"Urho3D::SharedPtr<StateObject>");
- tolua_register_gc(tolua_S,lua_gettop(tolua_S));
-#else
- void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(Urho3D::SharedPtr<StateObject>));
-  tolua_pushusertype(tolua_S,tolua_obj,"Urho3D::SharedPtr<StateObject>");
- tolua_register_gc(tolua_S,lua_gettop(tolua_S));
-#endif
- }
+  StateObject* tolua_ret = (StateObject*)  self->Lua_Get(typeName);
+  ToluaPushObject(tolua_S,(void*)tolua_ret,"StateObject");
  }
  }
  return 1;
@@ -1778,7 +1805,7 @@ static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Get00(lua_Stat
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: Add of class  StateObjectsManager */
+/* method: Lua_Add of class  StateObjectsManager */
 #ifndef TOLUA_DISABLE_tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Add00
 static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Add00(lua_State* tolua_S)
 {
@@ -1786,7 +1813,7 @@ static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Add00(lua_Stat
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"StateObjectsManager",0,&tolua_err) ||
- (tolua_isvaluenil(tolua_S,2,&tolua_err) || !tolua_isusertype(tolua_S,2,"Urho3D::SharedPtr<StateObject>",0,&tolua_err)) ||
+ !tolua_isusertype(tolua_S,2,"StateObject",0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
@@ -1794,12 +1821,12 @@ static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Add00(lua_Stat
 #endif
  {
   StateObjectsManager* self = (StateObjectsManager*)  tolua_tousertype(tolua_S,1,0);
-  Urho3D::SharedPtr<StateObject> object = *((Urho3D::SharedPtr<StateObject>*)  tolua_tousertype(tolua_S,2,0));
+  StateObject* object = ((StateObject*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Add'", NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Lua_Add'", NULL);
 #endif
  {
-  self->Add(object);
+  self->Lua_Add(object);
  }
  }
  return 0;
@@ -1811,7 +1838,7 @@ static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Add00(lua_Stat
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: Remove of class  StateObjectsManager */
+/* method: Lua_Remove of class  StateObjectsManager */
 #ifndef TOLUA_DISABLE_tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Remove00
 static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Remove00(lua_State* tolua_S)
 {
@@ -1819,7 +1846,7 @@ static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Remove00(lua_S
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"StateObjectsManager",0,&tolua_err) ||
- (tolua_isvaluenil(tolua_S,2,&tolua_err) || !tolua_isusertype(tolua_S,2,"Urho3D::SharedPtr<StateObject>",0,&tolua_err)) ||
+ !tolua_isusertype(tolua_S,2,"StateObject",0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
@@ -1827,12 +1854,12 @@ static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Remove00(lua_S
 #endif
  {
   StateObjectsManager* self = (StateObjectsManager*)  tolua_tousertype(tolua_S,1,0);
-  Urho3D::SharedPtr<StateObject> object = *((Urho3D::SharedPtr<StateObject>*)  tolua_tousertype(tolua_S,2,0));
+  StateObject* object = ((StateObject*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Remove'", NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Lua_Remove'", NULL);
 #endif
  {
-  bool tolua_ret = (bool)  self->Remove(object);
+  bool tolua_ret = (bool)  self->Lua_Remove(object);
  tolua_pushboolean(tolua_S,(bool)tolua_ret);
  }
  }
@@ -1845,7 +1872,41 @@ static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Remove00(lua_S
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: GetAll of class  StateObjectsManager */
+/* method: Lua_Create of class  StateObjectsManager */
+#ifndef TOLUA_DISABLE_tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Create00
+static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Create00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"StateObjectsManager",0,&tolua_err) ||
+ !tolua_isurho3dstring(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  StateObjectsManager* self = (StateObjectsManager*)  tolua_tousertype(tolua_S,1,0);
+  Urho3D::String typeName = ((Urho3D::String)  tolua_tourho3dstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Lua_Create'", NULL);
+#endif
+ {
+  StateObject* tolua_ret = (StateObject*)  self->Lua_Create(typeName);
+  ToluaPushObject(tolua_S,(void*)tolua_ret,"StateObject");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'Create'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: Lua_GetAll of class  StateObjectsManager */
 #ifndef TOLUA_DISABLE_tolua_AllStatesEngine_StatesEngine_StateObjectsManager_GetAll00
 static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_GetAll00(lua_State* tolua_S)
 {
@@ -1863,11 +1924,21 @@ static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_GetAll00(lua_S
   StateObjectsManager* self = (StateObjectsManager*)  tolua_tousertype(tolua_S,1,0);
   Urho3D::String typeName = ((Urho3D::String)  tolua_tourho3dstring(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetAll'", NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Lua_GetAll'", NULL);
 #endif
  {
-  Urho3D::Vector<Urho3D::SharedPtr<StateObject> >* tolua_ret = (Urho3D::Vector<Urho3D::SharedPtr<StateObject> >*)  self->GetAll(typeName);
-  ToluaPushVector<Urho3D::SharedPtr<StateObject> >(tolua_S,(void*)tolua_ret,"Urho3D::Vector<Urho3D::SharedPtr<StateObject> >");
+  Urho3D::Vector<StateObject*> tolua_ret = (Urho3D::Vector<StateObject*>)  self->Lua_GetAll(typeName);
+ {
+#ifdef __cplusplus
+ void* tolua_obj = Mtolua_new((Urho3D::Vector<StateObject*>)(tolua_ret));
+  ToluaPushVector<StateObject*>(tolua_S,tolua_obj,"Urho3D::Vector<StateObject*>");
+ tolua_register_gc(tolua_S,lua_gettop(tolua_S));
+#else
+ void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(Urho3D::Vector<StateObject*>));
+  ToluaPushVector<StateObject*>(tolua_S,tolua_obj,"Urho3D::Vector<StateObject*>");
+ tolua_register_gc(tolua_S,lua_gettop(tolua_S));
+#endif
+ }
  }
  }
  return 1;
@@ -1975,50 +2046,6 @@ static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_CountOf00(lua_
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'CountOf'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: Create of class  StateObjectsManager */
-#ifndef TOLUA_DISABLE_tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Create00
-static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Create00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"StateObjectsManager",0,&tolua_err) ||
- !tolua_isurho3dstring(tolua_S,2,0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  StateObjectsManager* self = (StateObjectsManager*)  tolua_tousertype(tolua_S,1,0);
-  Urho3D::String typeName = ((Urho3D::String)  tolua_tourho3dstring(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Create'", NULL);
-#endif
- {
-  Urho3D::SharedPtr<StateObject> tolua_ret = (Urho3D::SharedPtr<StateObject>)  self->Create(typeName);
- {
-#ifdef __cplusplus
- void* tolua_obj = Mtolua_new((Urho3D::SharedPtr<StateObject>)(tolua_ret));
-  tolua_pushusertype(tolua_S,tolua_obj,"Urho3D::SharedPtr<StateObject>");
- tolua_register_gc(tolua_S,lua_gettop(tolua_S));
-#else
- void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(Urho3D::SharedPtr<StateObject>));
-  tolua_pushusertype(tolua_S,tolua_obj,"Urho3D::SharedPtr<StateObject>");
- tolua_register_gc(tolua_S,lua_gettop(tolua_S));
-#endif
- }
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'Create'.",&tolua_err);
  return 0;
 #endif
 }
@@ -2184,7 +2211,7 @@ static int tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_Dispose00(lu
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: GetState of class  StatesEngineSubsystem */
+/* method: Lua_GetState of class  StatesEngineSubsystem */
 #ifndef TOLUA_DISABLE_tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_GetState00
 static int tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_GetState00(lua_State* tolua_S)
 {
@@ -2200,10 +2227,10 @@ static int tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_GetState00(l
  {
   StatesEngineSubsystem* self = (StatesEngineSubsystem*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'GetState'", NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Lua_GetState'", NULL);
 #endif
  {
-  StateObject* tolua_ret = (StateObject*)  self->GetState();
+  StateObject* tolua_ret = (StateObject*)  self->Lua_GetState();
   ToluaPushObject(tolua_S,(void*)tolua_ret,"StateObject");
  }
  }
@@ -2211,6 +2238,39 @@ static int tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_GetState00(l
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'GetState'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: Lua_SetupState of class  StatesEngineSubsystem */
+#ifndef TOLUA_DISABLE_tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_SetupState00
+static int tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_SetupState00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"StatesEngineSubsystem",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"StateObject",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  StatesEngineSubsystem* self = (StatesEngineSubsystem*)  tolua_tousertype(tolua_S,1,0);
+  StateObject* state = ((StateObject*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Lua_SetupState'", NULL);
+#endif
+ {
+  self->Lua_SetupState(state);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'SetupState'.",&tolua_err);
  return 0;
 #endif
 }
@@ -2308,39 +2368,6 @@ static int tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_IsState00(lu
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'IsState'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: SetupState of class  StatesEngineSubsystem */
-#ifndef TOLUA_DISABLE_tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_SetupState00
-static int tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_SetupState00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"StatesEngineSubsystem",0,&tolua_err) ||
- (tolua_isvaluenil(tolua_S,2,&tolua_err) || !tolua_isusertype(tolua_S,2,"Urho3D::SharedPtr<StateObject>",0,&tolua_err)) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  StatesEngineSubsystem* self = (StatesEngineSubsystem*)  tolua_tousertype(tolua_S,1,0);
-  Urho3D::SharedPtr<StateObject> state = *((Urho3D::SharedPtr<StateObject>*)  tolua_tousertype(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'SetupState'", NULL);
-#endif
- {
-  self->SetupState(state);
- }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'SetupState'.",&tolua_err);
  return 0;
 #endif
 }
@@ -2448,10 +2475,11 @@ TOLUA_API int tolua_AllStatesEngine_open (lua_State* tolua_S)
    tolua_function(tolua_S,"new",tolua_AllStatesEngine_StatesEngine_SceneContainer_new00);
    tolua_function(tolua_S,"new_local",tolua_AllStatesEngine_StatesEngine_SceneContainer_new00_local);
    tolua_function(tolua_S,".call",tolua_AllStatesEngine_StatesEngine_SceneContainer_new00_local);
+   tolua_function(tolua_S,"SetFromXMLElement",tolua_AllStatesEngine_StatesEngine_SceneContainer_SetFromXMLElement00);
+   tolua_function(tolua_S,"SetFromXMLFile",tolua_AllStatesEngine_StatesEngine_SceneContainer_SetFromXMLFile00);
    tolua_function(tolua_S,"Set",tolua_AllStatesEngine_StatesEngine_SceneContainer_Set00);
-   tolua_function(tolua_S,"Set",tolua_AllStatesEngine_StatesEngine_SceneContainer_Set01);
-   tolua_function(tolua_S,"Set",tolua_AllStatesEngine_StatesEngine_SceneContainer_Set02);
    tolua_function(tolua_S,"Get",tolua_AllStatesEngine_StatesEngine_SceneContainer_Get00);
+   tolua_function(tolua_S,"Get",tolua_AllStatesEngine_StatesEngine_SceneContainer_Get01);
    tolua_function(tolua_S,"GetNode",tolua_AllStatesEngine_StatesEngine_SceneContainer_GetNode00);
    tolua_function(tolua_S,"SetupSceneViewport",tolua_AllStatesEngine_StatesEngine_SceneContainer_SetupSceneViewport00);
    tolua_function(tolua_S,"SetupSceneViewport",tolua_AllStatesEngine_StatesEngine_SceneContainer_SetupSceneViewport01);
@@ -2505,11 +2533,11 @@ TOLUA_API int tolua_AllStatesEngine_open (lua_State* tolua_S)
    tolua_function(tolua_S,"Get",tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Get00);
    tolua_function(tolua_S,"Add",tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Add00);
    tolua_function(tolua_S,"Remove",tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Remove00);
+   tolua_function(tolua_S,"Create",tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Create00);
    tolua_function(tolua_S,"GetAll",tolua_AllStatesEngine_StatesEngine_StateObjectsManager_GetAll00);
    tolua_function(tolua_S,"RemoveAll",tolua_AllStatesEngine_StatesEngine_StateObjectsManager_RemoveAll00);
    tolua_function(tolua_S,"IsContain",tolua_AllStatesEngine_StatesEngine_StateObjectsManager_IsContain00);
    tolua_function(tolua_S,"CountOf",tolua_AllStatesEngine_StatesEngine_StateObjectsManager_CountOf00);
-   tolua_function(tolua_S,"Create",tolua_AllStatesEngine_StatesEngine_StateObjectsManager_Create00);
   tolua_endmodule(tolua_S);
  tolua_endmodule(tolua_S);
  tolua_module(tolua_S,"StatesEngine",0);
@@ -2527,10 +2555,10 @@ TOLUA_API int tolua_AllStatesEngine_open (lua_State* tolua_S)
    tolua_function(tolua_S,"Update",tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_Update00);
    tolua_function(tolua_S,"Dispose",tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_Dispose00);
    tolua_function(tolua_S,"GetState",tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_GetState00);
+   tolua_function(tolua_S,"SetupState",tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_SetupState00);
    tolua_function(tolua_S,"HasState",tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_HasState00);
    tolua_function(tolua_S,"DisposeState",tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_DisposeState00);
    tolua_function(tolua_S,"IsState",tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_IsState00);
-   tolua_function(tolua_S,"SetupState",tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_SetupState00);
    tolua_function(tolua_S,"GetInstance",tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_GetInstance00);
    tolua_function(tolua_S,"delete",tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_delete00);
   tolua_endmodule(tolua_S);

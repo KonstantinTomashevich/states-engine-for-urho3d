@@ -28,5 +28,17 @@ public:
     /// Calls Dispose () of all containing state objects.
     virtual bool Dispose ();
     virtual ~StateObjectsManager ();
+
+
+    /// \brief version of StateObjectsHub::Get for Lua, because Lua don't support Urho3D::SharedPtr's.
+    StateObject *Lua_Get (Urho3D::String typeName);
+    /// \brief version of StateObjectsHub::Add for Lua, because Lua don't support Urho3D::SharedPtr's.
+    void Lua_Add (StateObject *object);
+    /// \brief version of StateObjectsHub::Remove for Lua, because Lua don't support Urho3D::SharedPtr's.
+    bool Lua_Remove (StateObject *object);
+    /// \brief version of StateObjectsHub::Create for Lua, because Lua don't support Urho3D::SharedPtr's.
+    StateObject *Lua_Create (Urho3D::String typeName);
+    /// \brief version of StateObjectsHub::GetAll for Lua, because Lua don't support Urho3D::SharedPtr's.
+    Urho3D::Vector <StateObject *> Lua_GetAll (Urho3D::String typeName);
 };
 }

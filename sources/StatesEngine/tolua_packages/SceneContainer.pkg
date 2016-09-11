@@ -5,10 +5,11 @@ module StatesEngine
 class SceneContainer : public StateObject
 {
     SceneContainer (Urho3D::Context *context);
-    void Set (Urho3D::SharedPtr <Urho3D::Scene> scene);
-    void Set (Urho3D::XMLElement source);
-    void Set (Urho3D::String pathToXML);
+    void Set @ SetFromXMLElement (Urho3D::XMLElement source);
+    void Set @ SetFromXMLFile (Urho3D::String pathToXML);
     
+    void Lua_Set @ Set (Urho3D::Scene *scene);
+    Urho3D::Scene *Lua_Get @ Get ();
     Urho3D::SharedPtr <Urho3D::Scene> Get ();
     Urho3D::Node *GetNode (Urho3D::String wayToNode);
 
