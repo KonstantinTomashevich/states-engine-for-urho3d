@@ -24,6 +24,7 @@ protected:
     void lua_SetIsWillBeUpdated ();
     void lua_GetIsWillBeUpdated();
     void lua_SetParent ();
+    void lua_SetCXXObject ();
 public:
     LuaStateObject (Urho3D::Context *context);
     /// \brief Initialize your object here. Set *ready_ = true* in successfull end of initialize.

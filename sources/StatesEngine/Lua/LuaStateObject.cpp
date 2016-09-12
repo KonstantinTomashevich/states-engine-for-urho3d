@@ -81,6 +81,15 @@ void LuaStateObject::lua_SetParent ()
     lua_setfield (luaScript_->GetState (), -2, "parent_");
 }
 
+void LuaStateObject::lua_SetCXXObject ()
+{
+    lua_getglobal (luaScript_->GetState (), "StatesEngineUtils");
+    lua_getfield (luaScript_->GetState (), -1, "LuaStateObjects");
+    lua_getfield (luaScript_->GetState (), -1, luaObjectName_.CString ());
+    tolua_pushusertype (luaScript_->GetState (), this, GetTypeName ().CString ());
+    lua_setfield (luaScript_->GetState (), -2, "cxxObject_");
+}
+
 LuaStateObject::LuaStateObject (Urho3D::Context *context) : StateObject (context)
 {
     luaObjectName_ = "";
@@ -93,6 +102,7 @@ bool LuaStateObject::Init ()
 {
     if (luaObjectName_ != "")
     {
+        lua_SetCXXObject ();
         Urho3D::String luaCommand = "_G.StatesEngineUtils.LuaStateObjects." + luaObjectName_ + ":Init ()";
         luaScript_->ExecuteString (luaCommand);
         lua_GetReady ();
@@ -121,6 +131,7 @@ bool LuaStateObject::Update (float timeStep)
 {
     if (luaObjectName_ != "")
     {
+        lua_SetCXXObject ();
         Urho3D::String luaCommand = "_G.StatesEngineUtils.LuaStateObjects." + luaObjectName_ +
                 ":Update (" + Urho3D::String (timeStep) + ")";
         luaScript_->ExecuteString (luaCommand);
@@ -150,6 +161,7 @@ bool LuaStateObject::Dispose ()
 {
     if (luaObjectName_ != "")
     {
+        lua_SetCXXObject ();
         Urho3D::String luaCommand = "_G.StatesEngineUtils.LuaStateObjects." + luaObjectName_ + ":Dispose ()";
         luaScript_->ExecuteString (luaCommand);
         lua_GetReady ();
