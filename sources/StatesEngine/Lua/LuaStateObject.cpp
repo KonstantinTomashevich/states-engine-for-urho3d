@@ -31,22 +31,11 @@ void LuaStateObject::lua_GetReady ()
 
 void LuaStateObject::lua_SetReady ()
 {
-    Urho3D::LuaFunction *setter = luaScript_->GetFunction (Urho3D::String ("_G.StatesEngineUtils.LuaStateObjects.") +
-                                                           luaObjectName_ + Urho3D::String (":SetReady"));
-    if (setter)
-    {
-        if (!setter->BeginCall ())
-        {
-            assert (false);
-            return;
-        }
-        setter->PushBool (ready_);
-        if (!setter->EndCall ())
-        {
-            assert (false);
-            return;
-        }
-    }
+    lua_getglobal (luaScript_->GetState (), "StatesEngineUtils");
+    lua_getfield (luaScript_->GetState (), -1, "LuaStateObjects");
+    lua_getfield (luaScript_->GetState (), -1, luaObjectName_.CString ());
+    lua_pushboolean (luaScript_->GetState (), ready_);
+    lua_setfield (luaScript_->GetState (), -2, "ready_");
 }
 
 void LuaStateObject::lua_GetIsWillBeDeleted ()
@@ -193,7 +182,8 @@ void LuaStateObject::SetIsWillBeUpdated (bool isWillBeUpdated)
 void LuaStateObject::SetParent (StateObject *parent)
 {
     StateObject::SetParent (parent);
-    lua_SetParent ();
+    if (luaObjectName_ != "")
+        lua_SetParent ();
 }
 
 void LuaStateObject::CreateObject (Urho3D::String luaTypeName, Urho3D::String arguments)
@@ -217,6 +207,10 @@ void LuaStateObject::CreateObject (Urho3D::String luaTypeName, Urho3D::String ar
     Urho3D::String luaCommand = "_G.StatesEngineUtils.LuaStateObjects." + luaObjectName_ +
             " = " + luaTypeName + "(" + arguments + ")";
     luaScript_->ExecuteString (luaCommand);
+
+    lua_SetParent ();
+    lua_SetIsWillBeUpdated ();
+    lua_SetReady ();
 }
 
 Urho3D::String LuaStateObject::GetObjectName ()

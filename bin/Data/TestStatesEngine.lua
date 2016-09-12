@@ -45,9 +45,9 @@ function TestStatesEngine ()
     
     -- TODO: GetStatesEngine ():GetState ():Create () isn't work now, will be fixed later.
     
-    local testObject1 = StatesEngine.LuaStateObject:new (context)
+    local testObject1 = GetStatesEngine ():GetState ():Create ("LuaStateObject")
     testObject1:CreateObject ("_G.TestObject", "\"Hello, world!\"")
-    GetStatesEngine ():GetState ():Add (testObject1)
+    testObject1:Init ()
     GetStatesEngine ():GetState ():Init ()
     
     if _G.StatesEngineUtils.LuaStateObjects [testObject1:GetObjectName ()].parent_ ~= GetStatesEngine ():GetState () then
