@@ -1,4 +1,4 @@
-#include "BuildConfig.hpp"
+#include <StatesEngine/BuildConfig.hpp>
 #ifdef STATES_ENGINE_LUA
 #pragma once
 #include <Urho3D/Urho3D.h>

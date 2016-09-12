@@ -1,6 +1,6 @@
-#include "BuildConfig.hpp"
+#include <StatesEngine/BuildConfig.hpp>
 #ifdef STATES_ENGINE_LUA
-#include "StatesEngineAll.hpp"
+#include <StatesEngine/StatesEngineAll.hpp>
 #include "EnableLuaBindings.hpp"
 #include <Urho3D/ThirdParty/toluapp/tolua++.h>
 #include <Urho3D/LuaScript/ToluaUtils.h>

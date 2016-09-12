@@ -1,7 +1,7 @@
 # --- Create tolua++ StatesEngine bindings --- $
 if (STATES_ENGINE_LUA)
     # --- Copy tolua++ header because tolua++ generates files with relative include ("#include "tolua++.h") --- #
-    file (COPY "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/InitStatesEngine.lua" DESTINATION "${CMAKE_SOURCE_DIR}/bin/Data/StatesEngineLua")
+    file (COPY "${CMAKE_CURRENT_SOURCE_DIR}/Lua/tolua_packages/InitStatesEngine.lua" DESTINATION "${CMAKE_SOURCE_DIR}/bin/Data/StatesEngineLua")
 
     # --- Setup Urho3D's default tolua++ executable if it isn't specified --- #
     if (NOT TOLUAXX_EXECUTABLE)
@@ -11,39 +11,50 @@ if (STATES_ENGINE_LUA)
     message (STATUS "Current TOLUAXX_EXECUTABLE is: ${TOLUAXX_EXECUTABLE}")
 
     set (UmbrellaPkgCode "")
-    if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/AllStatesEngine.pkg")
-        file (REMOVE "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/AllStatesEngine.pkg")
+    if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Lua/tolua_packages/AllStatesEngine.pkg")
+        file (REMOVE "${CMAKE_CURRENT_SOURCE_DIR}/Lua/tolua_packages/AllStatesEngine.pkg")
     endif ()
 
-    file (GLOB TopLevelPackages "tolua_packages/*.pkg")
+    file (GLOB TopLevelPackages "Lua/tolua_packages/*.pkg")
     foreach (TopLevelPackage ${TopLevelPackages})
-        file (RELATIVE_PATH TopLevelPackageRelative "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages" ${TopLevelPackage})
+        file (RELATIVE_PATH TopLevelPackageRelative "${CMAKE_CURRENT_SOURCE_DIR}/Lua/tolua_packages" ${TopLevelPackage})
         set (UmbrellaPkgCode "${UmbrellaPkgCode}$pfile \"${TopLevelPackageRelative}\"\n")
     endforeach ()
-    file (WRITE "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages/AllStatesEngine.pkg" ${UmbrellaPkgCode})
+    file (WRITE "${CMAKE_CURRENT_SOURCE_DIR}/Lua/tolua_packages/AllStatesEngine.pkg" ${UmbrellaPkgCode})
 
     if (NOT DONT_REGENERATE_LUA_API)
         # --- Run tolua++ --- #
-        execute_process (COMMAND ${TOLUAXX_EXECUTABLE} -L "ToCppHook.lua" "AllStatesEngine.pkg" WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/tolua_packages" OUTPUT_VARIABLE TOLUAXX_OUTPUT)
+        execute_process (COMMAND ${TOLUAXX_EXECUTABLE} -L "ToCppHook.lua" "AllStatesEngine.pkg" WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/Lua/tolua_packages" OUTPUT_VARIABLE TOLUAXX_OUTPUT)
 
         # --- Write tolua++ output--- "
-        if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/tolua_AllStatesEngine.cpp")
-            file (REMOVE "${CMAKE_CURRENT_SOURCE_DIR}/tolua_AllStatesEngine.cpp")
+        if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/Lua/tolua_AllStatesEngine.cpp")
+            file (REMOVE "${CMAKE_CURRENT_SOURCE_DIR}/Lua/tolua_AllStatesEngine.cpp")
         endif ()
-        file (WRITE "${CMAKE_CURRENT_SOURCE_DIR}/tolua_AllStatesEngine.cpp" "${TOLUAXX_OUTPUT}")
+        file (WRITE "${CMAKE_CURRENT_SOURCE_DIR}/Lua/tolua_AllStatesEngine.cpp" "${TOLUAXX_OUTPUT}")
+        file (COPY "${CMAKE_CURRENT_SOURCE_DIR}/Lua/tolua_AllStatesEngine.cpp" DESTINATION "${CMAKE_SOURCE_DIR}/vendors")
+    else ()
+        file (COPY "${CMAKE_SOURCE_DIR}/vendors/tolua_AllStatesEngine.cpp" DESTINATION "${CMAKE_CURRENT_SOURCE_DIR}/Lua")
     endif ()
 endif ()
 
 # --- Generate StatesEngineAll.hpp --- #
 file (GLOB Headers "*.hpp")
+if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/StatesEngineAll.hpp")
+    file (REMOVE "${CMAKE_CURRENT_SOURCE_DIR}/StatesEngineAll.hpp")
+endif ()
+
 set (HeadersCode "#pragma once\n")
 foreach (Header ${Headers})
     file (RELATIVE_PATH HeaderRelative ${CMAKE_CURRENT_SOURCE_DIR} ${Header})
     set (HeadersCode "${HeadersCode}#include \"${HeaderRelative}\"\n")
 endforeach ()
 
-if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/StatesEngineAll.hpp")
-    file (REMOVE "${CMAKE_CURRENT_SOURCE_DIR}/StatesEngineAll.hpp")
+if (STATES_ENGINE_LUA)
+    file (GLOB LuaHeaders "Lua/*.hpp")
+    foreach (LuaHeader ${LuaHeaders})
+        file (RELATIVE_PATH LuaHeaderRelative ${CMAKE_CURRENT_SOURCE_DIR} ${LuaHeader})
+        set (HeadersCode "${HeadersCode}#include \"${LuaHeaderRelative}\"\n")
+    endforeach ()
 endif ()
 file (WRITE "${CMAKE_CURRENT_SOURCE_DIR}/StatesEngineAll.hpp" ${HeadersCode})
 
@@ -53,8 +64,17 @@ if (NOT STATES_ENGINE_LIB_TYPE)
 endif ()
 
 set (TARGET_NAME StatesEngine)
-define_source_files (GLOB_H_PATTERNS "*.hpp")
-list (REMOVE_ITEM SOURCE_FILES "tolua_AllStatesEngine.cpp")
+file (GLOB BasicHeaders "*.hpp")
+file (GLOB BasicImplementations "*.cpp")
+set (SOURCE_FILES ${BasicHeaders} ${BasicImplementations})
+
+if (STATES_ENGINE_LUA)
+    file (GLOB LuaBindingHeaders "Lua/*.hpp")
+    file (GLOB LuaBindingImplementations "Lua/*.cpp")
+    list (REMOVE_ITEM LuaBindingImplementations "${CMAKE_CURRENT_SOURCE_DIR}/Lua/tolua_AllStatesEngine.cpp")
+    set (SOURCE_FILES ${SOURCE_FILES} ${LuaBindingHeaders} ${LuaBindingImplementations})
+endif ()
+
 define_dependency_libs (Urho3D)
 setup_library (${STATES_ENGINE_LIB_TYPE})
 

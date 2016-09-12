@@ -1,5 +1,5 @@
 #pragma once
-#include "BuildConfig.hpp"
+#include <StatesEngine/BuildConfig.hpp>
 #ifdef STATES_ENGINE_LUA
 #include <Urho3D/LuaScript/LuaScript.h>
 namespace StatesEngine

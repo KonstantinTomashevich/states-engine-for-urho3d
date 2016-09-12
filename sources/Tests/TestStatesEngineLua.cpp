@@ -6,8 +6,8 @@
 
 #include <StatesEngine/StatesEngine.hpp>
 #include <StatesEngine/StateObjectsManager.hpp>
-#include <StatesEngine/LuaStateObject.hpp>
-#include <StatesEngine/EnableLuaBindings.hpp>
+#include <StatesEngine/Lua/LuaStateObject.hpp>
+#include <StatesEngine/Lua/EnableLuaBindings.hpp>
 
 TestStatesEngineLua::TestStatesEngineLua (Urho3D::Context *context) : Urho3D::Application(context)
 {

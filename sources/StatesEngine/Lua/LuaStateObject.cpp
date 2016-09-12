@@ -1,10 +1,8 @@
-#include "BuildConfig.hpp"
+#include <StatesEngine/BuildConfig.hpp>
 #ifdef STATES_ENGINE_LUA
 #include "LuaStateObject.hpp"
 #include <Urho3D/LuaScript/LuaFunction.h>
 #include <Urho3D/ThirdParty/toluapp/tolua++.h>
-
-#include <Urho3D/IO/Log.h>
 
 namespace StatesEngine
 {
