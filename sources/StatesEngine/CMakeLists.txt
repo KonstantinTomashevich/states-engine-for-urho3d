@@ -83,8 +83,10 @@ if (STATES_ENGINE_INSTALL)
     install (TARGETS StatesEngine EXPORT StatesEngineConfig ARCHIVE DESTINATION ${CMAKE_INSTALL_PREFIX}/libs LIBRARY DESTINATION ${CMAKE_INSTALL_PREFIX}/libs)
     install (EXPORT StatesEngineConfig DESTINATION ${CMAKE_INSTALL_PREFIX}/cmake)
 
-    set (DEST_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/include/StatesEngine)
-    install_header_files (FILES ${H_FILES} DESTINATION ${DEST_INCLUDE_DIR} FILES_MATCHING PATTERN *.hpp)
+    install (FILES ${BasicHeaders} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/StatesEngine")
+    if (STATES_ENGINE_LUA)
+        install (FILES ${LuaBindingHeaders} DESTINATION "${CMAKE_INSTALL_PREFIX}/include/StatesEngine/Lua")
+    endif ()
 endif ()
 # --- Write configuration variables which used as defines in StatesEngine code --- #
 configure_file (${CMAKE_CURRENT_SOURCE_DIR}/BuildConfig.hpp.cmake ${CMAKE_CURRENT_SOURCE_DIR}/BuildConfig.hpp)
