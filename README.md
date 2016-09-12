@@ -14,4 +14,4 @@ See more in wiki and check our sample.
 * [Konstantin Tomashevich.](https://github.com/KonstantinTomashevich/)
 
 ### License
-Project license is MIT, that seems that you can use it for what you want, free of charge. :)
+Project license is MIT. You can use this project for any purposes (even commercial) free of charge. :)
