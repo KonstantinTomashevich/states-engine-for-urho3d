@@ -1,4 +1,4 @@
-﻿#include "StateObjectsHub.hpp"
+#include "StateObjectsHub.hpp"
 #include "StatesEngineEvents.hpp"
 #include "BuildConfig.hpp"
 
@@ -17,8 +17,8 @@ StateObjectsHub::~StateObjectsHub ()
 bool StateObjectsHub::ReInitAll (Urho3D::String typeName)
 {
     assert (typeName != Urho3D::String::EMPTY);
-    Urho3D::Vector <Urho3D::SharedPtr<StateObject> > *objects = GetAll (typeName);
-    if (!objects->Empty ())
+    Urho3D::Vector <Urho3D::SharedPtr<StateObject> > objects = GetAll (typeName);
+    if (!objects.Empty ())
         for (int index = 0; index < objects_.Size (); index++)
         {
             Urho3D::SharedPtr <StateObject> object = objects_.At (index);
@@ -31,7 +31,6 @@ bool StateObjectsHub::ReInitAll (Urho3D::String typeName)
                     GetContext ()->GetSubsystem <Urho3D::Log> ()->Write (Urho3D::LOG_DEBUG, Urho3D::String ("Result: ") + Urho3D::String (result) + Urho3D::String ("."));
             }
         }
-    delete objects;
     return true;
 }
 
@@ -39,11 +38,11 @@ bool StateObjectsHub::UpdateAll (Urho3D::String typeName, float timeStep)
 {
     assert (typeName != Urho3D::String::EMPTY);
     assert (timeStep > 0.0f);
-    Urho3D::Vector <Urho3D::SharedPtr<StateObject> > *objects = GetAll (typeName);
-    if (!objects->Empty ())
-        for (int index = 0; index < objects->Size (); index++)
+    Urho3D::Vector <Urho3D::SharedPtr <StateObject> > objects = GetAll (typeName);
+    if (!objects.Empty ())
+        for (int index = 0; index < objects.Size (); index++)
         {
-            Urho3D::SharedPtr <StateObject> object = objects->At (index);
+            Urho3D::SharedPtr <StateObject> object = objects.At (index);
             if (object.NotNull () && object->IsReady () && object->IsWillBeUpdated ())
             {
                 if (isUseLog_)
@@ -54,12 +53,12 @@ bool StateObjectsHub::UpdateAll (Urho3D::String typeName, float timeStep)
             }
         }
 
-    if (!objects->Empty ())
+    if (!objects.Empty ())
     {
         int index = 0;
-        while (index < objects->Size ())
+        while (index < objects.Size ())
         {
-            Urho3D::SharedPtr<StateObject> object = objects->At (index);
+            Urho3D::SharedPtr <StateObject> object = objects.At (index);
             if (object.NotNull () && object->IsWillBeDeleted ())
             {
                 if (isUseLog_)
@@ -70,25 +69,24 @@ bool StateObjectsHub::UpdateAll (Urho3D::String typeName, float timeStep)
                     GetContext ()->GetSubsystem <Urho3D::Log> ()->Write (Urho3D::LOG_DEBUG, Urho3D::String ("Result: ") + Urho3D::String (result) + Urho3D::String ("."));
 
                 objects_.Remove (object);
-                objects->Remove (object);
+                objects.Remove (object);
             }
             else
                 index++;
         }
         objects_.Compact ();
     }
-    delete objects;
     return true;
 }
 
 bool StateObjectsHub::DisposeAll (Urho3D::String typeName)
 {
     assert (typeName != Urho3D::String::EMPTY);
-    Urho3D::Vector <Urho3D::SharedPtr<StateObject> > *objects = GetAll (typeName);
-    if (!objects->Empty ())
-        for (int index = 0; index < objects->Size (); index++)
+    Urho3D::Vector <Urho3D::SharedPtr <StateObject> > objects = GetAll (typeName);
+    if (!objects.Empty ())
+        for (int index = 0; index < objects.Size (); index++)
         {
-            Urho3D::SharedPtr <StateObject> object = objects->At (index);
+            Urho3D::SharedPtr <StateObject> object = objects.At (index);
             if (object.NotNull ())
             {
                 if (isUseLog_)
@@ -98,7 +96,6 @@ bool StateObjectsHub::DisposeAll (Urho3D::String typeName)
                     GetContext ()->GetSubsystem <Urho3D::Log> ()->Write (Urho3D::LOG_DEBUG, Urho3D::String ("Result: ") + Urho3D::String (result) + Urho3D::String ("."));
             }
         }
-    delete objects;
     return true;
 }
 
@@ -111,14 +108,13 @@ Urho3D::SharedPtr <StateObject> StateObjectsHub::Get (Urho3D::String typeName)
     return Urho3D::SharedPtr <StateObject> ();
 }
 
-Urho3D::Vector <Urho3D::SharedPtr <StateObject> > *StateObjectsHub::GetAll (Urho3D::String typeName)
+Urho3D::Vector <Urho3D::SharedPtr <StateObject> > StateObjectsHub::GetAll (Urho3D::String typeName)
 {
     assert (typeName != Urho3D::String::EMPTY);
-    Urho3D::Vector <Urho3D::SharedPtr <StateObject> > *array =
-            new Urho3D::Vector <Urho3D::SharedPtr <StateObject> > ();
+    Urho3D::Vector <Urho3D::SharedPtr <StateObject> > array;
     for (int index = 0; index < objects_.Size (); index++)
         if (objects_.At (index)->GetTypeInfo ()->IsTypeOf (typeName) || typeName == "any")
-            array->Push (objects_.At (index));
+            array.Push (objects_.At (index));
     return array;
 }
 
@@ -141,7 +137,7 @@ void StateObjectsHub::Add (Urho3D::SharedPtr <StateObject> object)
     SendUrho3DEvent (Events::E_STATE_OBJECT_ADDED_TO_HUB, eventData);
 }
 
-bool StateObjectsHub::Remove (Urho3D::SharedPtr<StateObject> object)
+bool StateObjectsHub::Remove (Urho3D::SharedPtr <StateObject> object)
 {
     assert (object.NotNull ());
     if (objects_.Contains (object))
@@ -157,11 +153,14 @@ bool StateObjectsHub::Remove (Urho3D::SharedPtr<StateObject> object)
 void StateObjectsHub::RemoveAll (Urho3D::String typeName)
 {
     assert (typeName != Urho3D::String::EMPTY);
-    Urho3D::Vector <Urho3D::SharedPtr <StateObject> > *array = GetAll (typeName);
-    for (int index = 0; index < array->Size (); index++)
-        Remove (array->At (index));
-    array->Clear ();
-    delete array;
+    int index = 0;
+    while (!objects_.Empty () && index < objects_.Size ())
+    {
+        if (objects_.At (index)->GetTypeInfo ()->IsTypeOf (typeName) || typeName == "any")
+            objects_.Remove (objects_.At (index));
+        else
+            index++;
+    }
 }
 
 bool StateObjectsHub::IsContain (Urho3D::String typeName)
@@ -173,10 +172,7 @@ bool StateObjectsHub::IsContain (Urho3D::String typeName)
 int StateObjectsHub::CountOf (Urho3D::String typeName)
 {
     assert (typeName != Urho3D::String::EMPTY);
-    Urho3D::Vector <Urho3D::SharedPtr <StateObject> > *result = GetAll (typeName);
-    int count = result->Size ();
-    delete result;
-    return count;
+    return GetAll (typeName).Size ();
 }
 
 Urho3D::SharedPtr <StateObject> StateObjectsHub::Create (Urho3D::String typeName)

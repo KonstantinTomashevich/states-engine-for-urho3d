@@ -1,12 +1,11 @@
 language: cpp
 compiler: gcc
 dist: trusty
-sudo: required
 before_script:
 - echo $PWD
-- wget http://downloads.sourceforge.net/project/urho3d/Urho3D/1.6/Urho3D-1.6-Linux-64bit-SHARED.tar.gz -O Urho3D.tar.gz
+- wget http://downloads.sourceforge.net/project/urho3d/Urho3D/1.6/Urho3D-1.6-Linux-64bit-STATIC.tar.gz -O Urho3D.tar.gz
 - tar -xvf Urho3D.tar.gz
-- export URHO3D_HOME=$PWD/Urho3D-1.6-Linux-64bit-SHARED/usr/local
+- export URHO3D_HOME=$PWD/Urho3D-1.6-Linux-64bit-STATIC/usr/local
 - echo $URHO3D_HOME
 - "export DISPLAY=:99.0"
 - "sh -e /etc/init.d/xvfb start"
@@ -16,7 +15,7 @@ script:
 - mkdir build 
 - cd build 
 - echo $URHO3D_HOME
-- cmake .. -DSTATES_ENGINE_ENABLE_TESTING=1
+- cmake .. -DSTATES_ENGINE_ENABLE_TESTING=1 -DSTATES_ENGINE_LUA=1 -DTOLUA_DEBUG=1 -DDONT_REGENERATE_LUA_API=1
 - make 
 - make test
 after_failure:
@@ -25,7 +24,3 @@ after_failure:
 - cat CTestCostData.txt
 - cat LastTest.txt
 - cat LastTestsFailed.txt
-- cd ..
-- cd ..
-- cd bin
-- cat Urho3D.log

@@ -1,0 +1,21 @@
+$using namespace StatesEngine;
+$using namespace Urho3D;
+module StatesEngine
+{
+class StatesEngineSubsystem : Object
+{
+    StatesEngineSubsystem (Context *context);
+    bool Init ();
+    void Update (StringHash eventType, VariantMap& info);
+    bool Dispose ();
+
+    StateObject *Lua_GetState @ GetState ();
+    void Lua_SetupState @ SetupState (StateObject *state, bool isKeepPrevious = false);
+    
+    bool HasState ();
+    void DisposeState ();
+    bool IsState (String typeName);
+    static StatesEngineSubsystem *GetInstance ();
+    ~StatesEngineSubsystem ();
+}
+}

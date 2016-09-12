@@ -1,0 +1,7 @@
+$using namespace Urho3D;
+module StatesEngine
+{
+module Events
+{
+}
+}

@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include <Urho3D/Urho3D.h>
 #include <Urho3D/Container/Vector.h>
 #include <Urho3D/Container/Ptr.h>
@@ -6,9 +6,7 @@
 #include "StateObject.hpp"
 #include "BuildConfig.hpp"
 
-/*!
- * Namespace for all States Engine classes.
- */
+/// \brief Namespace for all States Engine classes.
 namespace StatesEngine
 {
 
@@ -24,47 +22,44 @@ protected:
     virtual void SendUrho3DEvent (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData) = 0;
 public:
     StateObjectsHub ();
-    /// Calls Init () of all objects with given type.
+    /// \brief Calls Init () of all objects with given type.
     bool ReInitAll (Urho3D::String typeName);
-    /// Calls Update (timeStep) of all objects with given type and *IsReady () && IsWillBeUpdated ()*.
+    /// \brief Calls Update (timeStep) of all objects with given type and *IsReady () && IsWillBeUpdated ()*.
     bool UpdateAll (Urho3D::String typeName, float timeStep);
-    /// Calls Dispose () of all objects with given type.
+    /// \brief Calls Dispose () of all objects with given type.
     bool DisposeAll (Urho3D::String typeName);
     bool IsUseLog ();
     void SetIsUseLog (bool isUseLog);
     virtual ~StateObjectsHub ();
 
-    /// Returns first state object with given type.
+    /// \brief Returns first state object with given type.
     Urho3D::SharedPtr <StateObject> Get (Urho3D::String typeName);
-    /// Adds given state object and calls Init () of it if it's *IsReady () == false*.
+    /// \brief Adds given state object and calls Init () of it if it's *IsReady () == false*.
     void Add (Urho3D::SharedPtr <StateObject> object);
-    /*! \brief Removes given object from state.
-     *  \param [in] object object to remove.
-     *  \param [in] isDelete call *delete object;* after removing?
-     */
+    ///  \brief Removes given object from state.
+    ///  \param [in] object object to remove.
+    ///  \param [in] isDelete call *delete object;* after removing?
     bool Remove (Urho3D::SharedPtr <StateObject> object);
 
     /// Returns new vector with all state objects with given type.
-    Urho3D::Vector <Urho3D::SharedPtr <StateObject> > *GetAll (Urho3D::String typeName);
+    Urho3D::Vector <Urho3D::SharedPtr <StateObject> > GetAll (Urho3D::String typeName);
 
-    /*! \brief Removes all objects with given type.
-     *  \param [in] typeName objects type name, see Urho3D::Object::GetTypeName ().
-     *  \param [in] isDelete call *delete object;* after removing?
-     */
+    ///  \brief Removes all objects with given type.
+    ///  \param [in] typeName objects type name, see Urho3D::Object::GetTypeName ().
+    ///  \param [in] isDelete call *delete object;* after removing?
     void RemoveAll (Urho3D::String typeName);
 
-    /// Is contain at least one state object with given type?
+    /// \brief Is contain at least one state object with given type?
     bool IsContain (Urho3D::String typeName);
-    /// Returns count of state objects with given type.
+    /// \brief Returns count of state objects with given type.
     int CountOf (Urho3D::String typeName);
 
-    /*! \brief Create object of given type and add it to hub.
-     *  \param typeName typeName of given object. Objects factory will be registered in context.
-     *  \return Urho3D::SharedPtr to created object.
-     */
+    ///  \brief Create object of given type and add it to hub.
+    ///  \param typeName typeName of given object. Objects factory will be registered in context.
+    ///  \return Urho3D::SharedPtr to created object.
     Urho3D::SharedPtr <StateObject> Create (Urho3D::String typeName);
 
-    /// Template version of StateObjectsHub::Get (Urho3D::String).
+    /// \brief Template version of StateObjectsHub::Get (Urho3D::String).
     template <class T> inline Urho3D::SharedPtr <T> Get ()
     {
         Urho3D::SharedPtr <T> object;
@@ -72,31 +67,39 @@ public:
         return object;
     }
 
-    /// Template version of StateObjectsHub::GetAll (Urho3D::String).
-    template <class T> inline Urho3D::Vector <Urho3D::SharedPtr <T> > *GetAll ()
+    /// \brief Template version of StateObjectsHub::GetAll (Urho3D::String).
+    template <class T> inline Urho3D::Vector <Urho3D::SharedPtr <T> > GetAll ()
     {
-        return (Urho3D::Vector <Urho3D::SharedPtr <T> > *) GetAll (T::GetTypeNameStatic ());
+        Urho3D::Vector <Urho3D::SharedPtr <StateObject> > gettedObjects = GetAll (T::GetTypeNameStatic ());
+        Urho3D::Vector <Urho3D::SharedPtr <T> > resultObjects;
+        for (int index = 0; index < gettedObjects.Size (); index++)
+        {
+            Urho3D::SharedPtr <T> newPtr;
+            newPtr.StaticCast (gettedObjects.At (index));
+            resultObjects.Push (newPtr);
+        }
+        return resultObjects;
     }
 
-    /// Template version of StateObjectsHub::RemoveAll (Urho3D::String, bool).
+    /// \brief Template version of StateObjectsHub::RemoveAll (Urho3D::String, bool).
     template <class T> inline void RemoveAll ()
     {
         RemoveAll (T::GetTypeNameStatic ());
     }
 
-    /// Template version of StateObjectsHub::IsContain (Urho3D::String).
+    /// \brief Template version of StateObjectsHub::IsContain (Urho3D::String).
     template <class T> inline bool IsContain ()
     {
         return IsContain (T::GetTypeNameStatic ());
     }
 
-    /// Template version of StateObjectsHub::CountOf (Urho3D::String).
+    /// \brief Template version of StateObjectsHub::CountOf (Urho3D::String).
     template <class T> inline int CountOf ()
     {
         return CountOf (T::GetTypeNameStatic ());
     }
 
-    /// Template version of StateObjectsHub::Create (Urho3D::String).
+    /// \brief Template version of StateObjectsHub::Create (Urho3D::String).
     template <class T> inline Urho3D::SharedPtr <T> Create ()
     {
         Urho3D::SharedPtr <T> object;

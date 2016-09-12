@@ -1,14 +1,9 @@
-﻿#include "TestStatesEngineCXX.hpp"
+#include "TestStatesEngineCXX.hpp"
 #include <Urho3D/Container/Ptr.h>
 #include <Urho3D/Graphics/Graphics.h>
 #include <Urho3D/Resource/ResourceCache.h>
 #include <Urho3D/Scene/Scene.h>
 #include <Urho3D/IO/Log.h>
-
-#include <Urho3D/Urho2D/TileMap2D.h>
-#include <Urho3D/Urho2D/TmxFile2D.h>
-#include <Urho3D/Urho2D/SpriteSheet2D.h>
-#include <Urho3D/Urho2D/PhysicsWorld2D.h>
 
 #include <StatesEngine/StatesEngine.hpp>
 #include <StatesEngine/StateObjectsManager.hpp>
@@ -30,7 +25,7 @@ void TestStatesEngineCXX::Start ()
     Urho3D::Log *log = context_->GetSubsystem <Urho3D::Log> ();
     log->Write (Urho3D::LOG_INFO, "Application started!");
 
-    StatesEngine::StatesEngine *statesEngine = new StatesEngine::StatesEngine (context_);
+    StatesEngine::StatesEngineSubsystem *statesEngine = new StatesEngine::StatesEngineSubsystem (context_);
     statesEngine->Init ();
     context_->RegisterSubsystem (statesEngine);
     statesEngine->SetupState (Urho3D::SharedPtr <StatesEngine::StateObjectsManager> (new StatesEngine::StateObjectsManager (context_)));
@@ -57,13 +52,18 @@ void TestStatesEngineCXX::Start ()
     statesEngine->GetState <StatesEngine::StateObjectsManager> ()->DisposeAll ("TestObject");
     if (!testObject->IsDisposed ())
         ErrorExit ("Test object dispose don't called!");
+
+    statesEngine->GetState <StatesEngine::StateObjectsManager> ()->RemoveAll ("TestObject");
+    if (statesEngine->GetState <StatesEngine::StateObjectsManager> ()->CountOf ("TestObject") != 0)
+        ErrorExit ("Test object don't removed after RemoveAll (\"TestObject\") call!");
+
     log->Write (Urho3D::LOG_INFO, "All tests passed!");
     engine_->Exit ();
 }
 
 void TestStatesEngineCXX::Stop ()
 {
-    StatesEngine::StatesEngine *statesEngine = context_->GetSubsystem <StatesEngine::StatesEngine> ();
+    StatesEngine::StatesEngineSubsystem *statesEngine = context_->GetSubsystem <StatesEngine::StatesEngineSubsystem> ();
     statesEngine->DisposeState ();
     context_->RemoveSubsystem ("StatesEngine");
 }

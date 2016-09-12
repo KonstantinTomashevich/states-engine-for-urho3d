@@ -1,48 +1,49 @@
-﻿#include "StatesEngine.hpp"
+#include "StatesEngine.hpp"
 #include "BuildConfig.hpp"
 namespace StatesEngine
 {
-
-StatesEngine::StatesEngine (Urho3D::Context *context) : Urho3D::Object (context), currentState_ ()
+StatesEngineSubsystem *StatesEngineSubsystem::instance_ = 0;
+StatesEngineSubsystem::StatesEngineSubsystem (Urho3D::Context *context) : Urho3D::Object (context), currentState_ ()
 {
-
+    assert (!instance_);
+    instance_ = this;
 }
 
-bool StatesEngine::Init ()
+bool StatesEngineSubsystem::Init ()
 {
-    SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (StatesEngine, Update));
+    SubscribeToEvent (Urho3D::E_UPDATE, URHO3D_HANDLER (StatesEngineSubsystem, Update));
     return true;
 }
 
-void StatesEngine::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &info)
+void StatesEngineSubsystem::Update (Urho3D::StringHash eventType, Urho3D::VariantMap &info)
 {
     float timeStep = info [Urho3D::Update::P_TIMESTEP].GetFloat ();
     if (HasState ())
         currentState_->Update (timeStep);
 }
 
-bool StatesEngine::Dispose ()
+bool StatesEngineSubsystem::Dispose ()
 {
     DisposeState ();
     return true;
 }
 
-Urho3D::SharedPtr<StateObject> StatesEngine::GetState()
+Urho3D::SharedPtr<StateObject> StatesEngineSubsystem::GetState()
 {
     return currentState_;
 }
 
-bool StatesEngine::HasState ()
+bool StatesEngineSubsystem::HasState ()
 {
     return currentState_.NotNull ();
 }
 
-void StatesEngine::DisposeState ()
+void StatesEngineSubsystem::DisposeState ()
 {
     currentState_.Reset ();
 }
 
-bool StatesEngine::IsState (Urho3D::String typeName)
+bool StatesEngineSubsystem::IsState (Urho3D::String typeName)
 {
     if (HasState ())
         return (currentState_->GetTypeInfo ()->IsTypeOf (typeName));
@@ -50,7 +51,7 @@ bool StatesEngine::IsState (Urho3D::String typeName)
         return false;
 }
 
-void StatesEngine::SetupState (Urho3D::SharedPtr <StateObject> state)
+void StatesEngineSubsystem::SetupState (Urho3D::SharedPtr <StateObject> state)
 {
     currentState_ = state;
     if (HasState ())
@@ -60,8 +61,30 @@ void StatesEngine::SetupState (Urho3D::SharedPtr <StateObject> state)
     }
 }
 
-StatesEngine::~StatesEngine ()
+StatesEngineSubsystem *StatesEngineSubsystem::GetInstance ()
+{
+    return instance_;
+}
+
+StatesEngineSubsystem::~StatesEngineSubsystem ()
 {
     Dispose ();
+}
+
+StateObject *StatesEngineSubsystem::Lua_GetState ()
+{
+    return currentState_.Get ();
+}
+
+void StatesEngineSubsystem::Lua_SetupState (StateObject *state, bool isKeepPrevious)
+{
+    if (currentState_.Get () != state)
+    {
+        Urho3D::SharedPtr <StateObject> newState (state);
+        Urho3D::SharedPtr <StateObject> previousState = GetState ();
+        SetupState (newState);
+        if (isKeepPrevious)
+            previousState.Detach ();
+    }
 }
 }

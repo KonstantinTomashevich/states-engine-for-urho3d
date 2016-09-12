@@ -1,0 +1,29 @@
+$using namespace StatesEngine;
+$using namespace Urho3D;
+module StatesEngine
+{
+class StateObjectsManager : public StateObject
+{
+    StateObjectsManager (Context *context);
+    bool ReInitAll (String typeName);
+    bool UpdateAll (String typeName, float timeStep);
+    bool DisposeAll (String typeName);
+    bool IsUseLog ();
+    void SetIsUseLog (bool isUseLog);
+    virtual ~StateObjectsManager ();
+
+    StateObject *Lua_Get @ Get (String typeName);
+    void Lua_Add @ Add (StateObject *object);
+    bool Lua_Remove @ Remove (StateObject *object, bool dontDelete = false);
+    StateObject *Lua_Create @ Create (String typeName);
+    PODVector <StateObject *> &Lua_GetAll @ GetAll (String typeName);
+    void Lua_RemoveAll @ RemoveAll (String typeName, bool dontDelete = false);
+    bool IsContain (String typeName);
+    int CountOf (String typeName);
+    LuaStateObject *Lua_CreateLuaStateObject @ CreateLuaStateObject (String luaTypeName, String arguments = "");
+    
+    LuaStateObject *Lua_GetByLuaTypeName @ GetByLuaTypeName (Urho3D::String typeName);
+    Urho3D::PODVector <StateObject *> &Lua_GetAllByLuaTypeName @ GetAllByLuaTypeName (Urho3D::String typeName);
+    void Lua_RemoveAllByLuaTypeName @ RemoveAllByLuaTypeName (Urho3D::String typeName, bool dontDelete = false);
+}
+}
