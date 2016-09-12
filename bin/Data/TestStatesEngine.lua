@@ -1,5 +1,3 @@
-require "Class"
-
 _G.TestObject = Class (_G.StatesEngine_LuaStateObjectInstance)
 function _G.TestObject:Construct (someValue)
     _G.StatesEngineUtils.LuaStateObjectInstance.Construct (self)
