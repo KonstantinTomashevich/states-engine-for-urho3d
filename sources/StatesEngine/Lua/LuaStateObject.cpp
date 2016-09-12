@@ -84,6 +84,7 @@ void LuaStateObject::lua_SetParent ()
 LuaStateObject::LuaStateObject (Urho3D::Context *context) : StateObject (context)
 {
     luaObjectName_ = "";
+    luaObjectTypeName_ = "";
     luaScript_ = context_->GetSubsystem <Urho3D::LuaScript> ();
     assert (luaScript_);
 }
@@ -188,6 +189,7 @@ void LuaStateObject::SetParent (StateObject *parent)
 
 void LuaStateObject::CreateObject (Urho3D::String luaTypeName, Urho3D::String arguments)
 {
+    luaObjectTypeName_ = luaTypeName;
     Urho3D::String preferedName = CreateLuaPreferedName (luaTypeName);
     Urho3D::String resultingName;
     int lastIndex = -1;
@@ -218,6 +220,11 @@ Urho3D::String LuaStateObject::GetObjectName ()
     return luaObjectName_;
 }
 
+Urho3D::String LuaStateObject::GetObjectTypeName ()
+{
+    return luaObjectTypeName_;
+}
+
 bool LuaStateObject::IsObjectNotNull ()
 {
     if (luaObjectName_ == "")
@@ -234,6 +241,7 @@ void LuaStateObject::ReleaseObject ()
     Urho3D::String luaCommand = "_G.StatesEngineUtils.LuaStateObjects." + luaObjectName_ + " = nil";
     luaScript_->ExecuteString (luaCommand);
     luaObjectName_ = "";
+    luaObjectTypeName_ = "";
 }
 
 LuaStateObject::~LuaStateObject ()

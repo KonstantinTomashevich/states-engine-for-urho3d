@@ -44,6 +44,7 @@ StateObjectsManager::~StateObjectsManager ()
     RemoveAll ("any");
 }
 
+#ifdef STATES_ENGINE_LUA
 StateObject *StateObjectsManager::Lua_Get (Urho3D::String typeName)
 {
     return Get (typeName).Get ();
@@ -113,4 +114,58 @@ void StateObjectsManager::Lua_RemoveAll(Urho3D::String typeName, bool dontDelete
             index++;
     }
 }
+
+LuaStateObject *StateObjectsManager::Lua_CreateLuaStateObject (Urho3D::String luaTypeName, Urho3D::String arguments)
+{
+    Urho3D::SharedPtr <LuaStateObject> luaStateObject;
+    luaStateObject.StaticCast (Create ("LuaStateObject"));
+    luaStateObject->CreateObject (luaTypeName, arguments);
+    luaStateObject->Init ();
+    return luaStateObject.Get ();
+}
+
+LuaStateObject *StateObjectsManager::Lua_GetByLuaTypeName(Urho3D::String typeName)
+{
+    assert (typeName != Urho3D::String::EMPTY);
+    Urho3D::Vector <Urho3D::SharedPtr <LuaStateObject> > luaStateObjects = GetAll <LuaStateObject> ();
+    for (int index = 0; index < luaStateObjects.Size (); index++)
+        if (luaStateObjects.At (index)->GetObjectTypeName () == typeName)
+            return luaStateObjects.At (index).Get ();
+    return 0;
+}
+
+Urho3D::PODVector <StateObject *> &StateObjectsManager::Lua_GetAllByLuaTypeName (Urho3D::String typeName)
+{
+    assert (typeName != Urho3D::String::EMPTY);
+    temporaryPodVector_.Clear ();
+    Urho3D::Vector <Urho3D::SharedPtr <LuaStateObject> > luaStateObjects = GetAll <LuaStateObject> ();
+    for (int index = 0; index < luaStateObjects.Size (); index++)
+        if (luaStateObjects.At (index)->GetObjectTypeName () == typeName)
+            temporaryPodVector_.Push (luaStateObjects.At (index));
+    return temporaryPodVector_;
+}
+
+void StateObjectsManager::Lua_RemoveAllByLuaTypeName (Urho3D::String typeName, bool dontDelete)
+{
+    assert (typeName != Urho3D::String::EMPTY);
+    int index = 0;
+    while (!objects_.Empty () && index < objects_.Size ())
+    {
+        if (objects_.At (index)->GetTypeInfo ()->IsTypeOf <LuaStateObject> () &&
+                ( (LuaStateObject *) objects_.At (index).Get ())->GetObjectTypeName () == typeName)
+        {
+            if (dontDelete)
+            {
+                Urho3D::SharedPtr <StateObject> temporaryPtr = objects_.At (index);
+                objects_.Remove (objects_.At (index));
+                temporaryPtr.Detach ();
+            }
+            else
+                objects_.Remove (objects_.At (index));
+        }
+        else
+            index++;
+    }
+}
+#endif
 }

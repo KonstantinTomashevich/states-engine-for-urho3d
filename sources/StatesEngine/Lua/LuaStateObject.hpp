@@ -14,6 +14,7 @@ class LuaStateObject : public StateObject
 URHO3D_OBJECT (LuaStateObject, StateObject)
 protected:
     Urho3D::String luaObjectName_;
+    Urho3D::String luaObjectTypeName_;
     Urho3D::LuaScript *luaScript_;
 
     Urho3D::String CreateLuaPreferedName (Urho3D::String luaTypeName);
@@ -40,6 +41,7 @@ public:
     /// \param arguments [optional] arguments for object constructor.
     void CreateObject (Urho3D::String luaTypeName, Urho3D::String arguments = "");
     Urho3D::String GetObjectName ();
+    Urho3D::String GetObjectTypeName ();
     bool IsObjectNotNull ();
     void ReleaseObject ();
     virtual ~LuaStateObject ();

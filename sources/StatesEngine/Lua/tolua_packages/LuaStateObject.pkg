@@ -19,6 +19,7 @@ class LuaStateObject : public StateObject
     
     void CreateObject (String luaTypeName, String arguments = "");
     String GetObjectName ();
+    String GetObjectTypeName ();
     bool IsObjectNotNull ();
     void ReleaseObject ();
     virtual ~LuaStateObject ();

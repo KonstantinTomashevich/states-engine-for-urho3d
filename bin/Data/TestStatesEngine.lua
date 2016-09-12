@@ -42,12 +42,8 @@ function TestStatesEngine ()
         Log:Write (LOG_INFO, "FAILED: StatesEngine's GetState return nil in script")
         return 2
     end
-    
-    -- TODO: GetStatesEngine ():GetState ():Create () isn't work now, will be fixed later.
-    
-    local testObject1 = GetStatesEngine ():GetState ():Create ("LuaStateObject")
-    testObject1:CreateObject ("_G.TestObject", "\"Hello, world!\"")
-    testObject1:Init ()
+      
+    local testObject1 = GetStatesEngine ():GetState ():CreateLuaStateObject ("_G.TestObject", "\"Hello, world!\"")
     GetStatesEngine ():GetState ():Init ()
     
     if _G.StatesEngineUtils.LuaStateObjects [testObject1:GetObjectName ()].parent_ ~= GetStatesEngine ():GetState () then
@@ -87,17 +83,24 @@ function TestStatesEngine ()
         Log:Write (LOG_INFO, "FAILED: Object isn't passed dispose after GetStatesEngine ():GetState ():DisposeAll (\"LuaStateObject\")!")
         return 8
     end
-    GetStatesEngine ():GetState ():RemoveAll ("LuaStateObject", true)
     
+    GetStatesEngine ():GetState ():RemoveAllByLuaTypeName ("_G.TestObject", true)
     if testObject1:IsObjectNotNull () ~= true then
         Log:Write (LOG_INFO, "FAILED: Object is nil now!")
         return 9
     end
     
+    if _G.StatesEngineUtils.LuaStateObjects [testObject1:GetObjectName ()].containedValue_ ~= "Hello, world!" then
+        Log:Write (LOG_INFO, "FAILED: Object's containedValue_ isn't equal setted! It is \"" .. 
+            tostring (_G.StatesEngineUtils.LuaStateObjects [testObject1:GetObjectName ()].containedValue_) .. 
+            "\" but will be \"Hello, world!\"!")
+        return 10
+    end
+    
     testObject1:ReleaseObject ()
     if testObject1:IsObjectNotNull () ~= false then
         Log:Write (LOG_INFO, "FAILED: Object isn't nil after ReleaseObject ()!")
-        return 10
+        return 11
     end
     
     testObject1:delete ()

@@ -6,6 +6,11 @@
 #include <Urho3D/Engine/Application.h>
 #include "StateObject.hpp"
 #include "StateObjectsHub.hpp"
+#include "BuildConfig.hpp"
+
+#ifdef STATES_ENGINE_LUA
+#include <StatesEngine/Lua/LuaStateObject.hpp>
+#endif
 
 /// \brief Namespace for all States Engine classes.
 namespace StatesEngine
@@ -33,7 +38,7 @@ public:
     virtual bool Dispose ();
     virtual ~StateObjectsManager ();
 
-
+#ifdef STATES_ENGINE_LUA
     /// \brief version of StateObjectsHub::Get for Lua, because Lua don't support Urho3D::SharedPtr's.
     StateObject *Lua_Get (Urho3D::String typeName);
     /// \brief version of StateObjectsHub::Add for Lua, because Lua don't support Urho3D::SharedPtr's.
@@ -46,5 +51,14 @@ public:
     Urho3D::PODVector <StateObject *> &Lua_GetAll (Urho3D::String typeName);
     /// \brief version of StateObjectsHub::RemoveAll for Lua, because Lua don't support Urho3D::SharedPtr's.
     void Lua_RemoveAll (Urho3D::String typeName, bool dontDelete = false);
+    /// \brief function for easier creating of lua objects. Creates LuaStateObject and runs CreateObject with given arguments.
+    LuaStateObject *Lua_CreateLuaStateObject (Urho3D::String luaTypeName, Urho3D::String arguments = "");
+    /// \brief function for getting LuaStateObjects by luaObjectTypeName.
+    LuaStateObject *Lua_GetByLuaTypeName (Urho3D::String typeName);
+    /// \brief function for getting LuaStateObjects by luaObjectTypeName.
+    Urho3D::PODVector <StateObject *> &Lua_GetAllByLuaTypeName (Urho3D::String typeName);
+    /// \brief function for removing LuaStateObjects by luaObjectTypeName.
+    void Lua_RemoveAllByLuaTypeName (Urho3D::String typeName, bool dontDelete = false);
+#endif
 };
 }

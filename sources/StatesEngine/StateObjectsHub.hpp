@@ -68,9 +68,17 @@ public:
     }
 
     /// \brief Template version of StateObjectsHub::GetAll (Urho3D::String).
-    template <class T> inline Urho3D::Vector <Urho3D::SharedPtr <T> > *GetAll ()
+    template <class T> inline Urho3D::Vector <Urho3D::SharedPtr <T> > GetAll ()
     {
-        return (Urho3D::Vector <Urho3D::SharedPtr <T> > *) GetAll (T::GetTypeNameStatic ());
+        Urho3D::Vector <Urho3D::SharedPtr <StateObject> > gettedObjects = GetAll (T::GetTypeNameStatic ());
+        Urho3D::Vector <Urho3D::SharedPtr <T> > resultObjects;
+        for (int index = 0; index < gettedObjects.Size (); index++)
+        {
+            Urho3D::SharedPtr <T> newPtr;
+            newPtr.StaticCast (gettedObjects.At (index));
+            resultObjects.Push (newPtr);
+        }
+        return resultObjects;
     }
 
     /// \brief Template version of StateObjectsHub::RemoveAll (Urho3D::String, bool).

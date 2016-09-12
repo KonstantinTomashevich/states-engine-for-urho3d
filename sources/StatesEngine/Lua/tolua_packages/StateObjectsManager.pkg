@@ -20,5 +20,10 @@ class StateObjectsManager : public StateObject
     void Lua_RemoveAll @ RemoveAll (String typeName, bool dontDelete = false);
     bool IsContain (String typeName);
     int CountOf (String typeName);
+    LuaStateObject *Lua_CreateLuaStateObject @ CreateLuaStateObject (String luaTypeName, String arguments = "");
+    
+    LuaStateObject *Lua_GetByLuaTypeName @ GetByLuaTypeName (Urho3D::String typeName);
+    Urho3D::PODVector <StateObject *> &Lua_GetAllByLuaTypeName @ GetAllByLuaTypeName (Urho3D::String typeName);
+    void Lua_RemoveAllByLuaTypeName @ RemoveAllByLuaTypeName (Urho3D::String typeName, bool dontDelete = false);
 }
 }
