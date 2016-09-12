@@ -1,4 +1,4 @@
-### States Engine For Urho3D
+### States Engine For Urho3D [![Build Status](https://travis-ci.org/KonstantinTomashevich/states-engine-for-urho3d.svg?branch=master)](https://travis-ci.org/KonstantinTomashevich/states-engine-for-urho3d)
 This is small engine for easier game creation on Urho3D Engine.
 See more in wiki and check our sample.
 
