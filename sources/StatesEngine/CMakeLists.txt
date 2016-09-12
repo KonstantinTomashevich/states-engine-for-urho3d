@@ -22,7 +22,7 @@ if (STATES_ENGINE_LUA)
     endforeach ()
     file (WRITE "${CMAKE_CURRENT_SOURCE_DIR}/Lua/tolua_packages/AllStatesEngine.pkg" ${UmbrellaPkgCode})
 
-    if (NOT DONT_REGENERATE_LUA_API)
+    if (NOT STATES_ENGINE_DONT_REGENERATE_LUA_API)
         # --- Run tolua++ --- #
         execute_process (COMMAND ${TOLUAXX_EXECUTABLE} -L "ToCppHook.lua" "AllStatesEngine.pkg" WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/Lua/tolua_packages" OUTPUT_VARIABLE TOLUAXX_OUTPUT)
 
