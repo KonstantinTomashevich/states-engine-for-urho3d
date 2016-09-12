@@ -16,7 +16,7 @@ class StateObjectsManager : public StateObject
     void Lua_Add @ Add (StateObject *object);
     bool Lua_Remove @ Remove (StateObject *object, bool dontDelete = false);
     StateObject *Lua_Create @ Create (String typeName);
-    Vector <StateObject *> Lua_GetAll @ GetAll (String typeName);
+    PODVector <StateObject *> &Lua_GetAll @ GetAll (String typeName);
     void Lua_RemoveAll @ RemoveAll (String typeName, bool dontDelete = false);
     bool IsContain (String typeName);
     int CountOf (String typeName);

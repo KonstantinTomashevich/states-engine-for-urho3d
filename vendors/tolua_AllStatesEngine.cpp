@@ -66,13 +66,6 @@ static int tolua_collect_LuaStateObject (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_StateObjectsManager (lua_State* tolua_S)
-{
- StateObjectsManager* self = (StateObjectsManager*) tolua_tousertype(tolua_S,1,0);
- Mtolua_delete(self);
- return 0;
-}
-
 static int tolua_collect_SceneContainer (lua_State* tolua_S)
 {
  SceneContainer* self = (SceneContainer*) tolua_tousertype(tolua_S,1,0);
@@ -87,9 +80,9 @@ static int tolua_collect_StatesEngineSubsystem (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_Vector_StateObject__ (lua_State* tolua_S)
+static int tolua_collect_StateObjectsManager (lua_State* tolua_S)
 {
- Vector<StateObject*>* self = (Vector<StateObject*>*) tolua_tousertype(tolua_S,1,0);
+ StateObjectsManager* self = (StateObjectsManager*) tolua_tousertype(tolua_S,1,0);
  Mtolua_delete(self);
  return 0;
 }
@@ -106,12 +99,12 @@ static int tolua_collect_SharedPtr_Scene_ (lua_State* tolua_S)
 /* function to register type */
 static void tolua_reg_types (lua_State* tolua_S)
 {
- tolua_usertype(tolua_S,"VariantMap");
+ tolua_usertype(tolua_S,"PODVector<StateObject*>");
  tolua_usertype(tolua_S,"IntRect");
- tolua_usertype(tolua_S,"StateObjectsManager");
+ tolua_usertype(tolua_S,"VariantMap");
  tolua_usertype(tolua_S,"SceneContainer");
+ tolua_usertype(tolua_S,"StateObjectsManager");
  tolua_usertype(tolua_S,"Node");
- tolua_usertype(tolua_S,"Vector<StateObject*>");
  tolua_usertype(tolua_S,"StringHash");
  tolua_usertype(tolua_S,"SharedPtr<Scene>");
  tolua_usertype(tolua_S,"LuaStateObject");
@@ -1930,18 +1923,8 @@ static int tolua_AllStatesEngine_StatesEngine_StateObjectsManager_GetAll00(lua_S
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'Lua_GetAll'", NULL);
 #endif
  {
-  Vector<StateObject*> tolua_ret = (Vector<StateObject*>)  self->Lua_GetAll(typeName);
- {
-#ifdef __cplusplus
- void* tolua_obj = Mtolua_new((Vector<StateObject*>)(tolua_ret));
-  ToluaPushVector<StateObject*>(tolua_S,tolua_obj,"StateObject");
- tolua_register_gc(tolua_S,lua_gettop(tolua_S));
-#else
- void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(Vector<StateObject*>));
-  ToluaPushVector<StateObject*>(tolua_S,tolua_obj,"StateObject");
- tolua_register_gc(tolua_S,lua_gettop(tolua_S));
-#endif
- }
+  PODVector<StateObject*>& tolua_ret = (PODVector<StateObject*>&)  self->Lua_GetAll(typeName);
+  ToluaPushPODVector<StateObject*>("",tolua_S,(void*)&tolua_ret,"StateObject");
  }
  }
  return 1;

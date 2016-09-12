@@ -19,6 +19,10 @@ protected:
     virtual StateObject *HubAsStateObject ();
     virtual Urho3D::Context *GetContext ();
     virtual void SendUrho3DEvent (Urho3D::StringHash eventType, Urho3D::VariantMap &eventData);
+
+#ifdef STATES_ENGINE_LUA
+    Urho3D::PODVector <StateObject *> temporaryPodVector_;
+#endif
 public:
     StateObjectsManager (Urho3D::Context *context);
     /// Calls Init () of all containing state objects.
@@ -39,7 +43,7 @@ public:
     /// \brief version of StateObjectsHub::Create for Lua, because Lua don't support Urho3D::SharedPtr's.
     StateObject *Lua_Create (Urho3D::String typeName);
     /// \brief version of StateObjectsHub::GetAll for Lua, because Lua don't support Urho3D::SharedPtr's.
-    Urho3D::Vector <StateObject *> Lua_GetAll (Urho3D::String typeName);
+    Urho3D::PODVector <StateObject *> &Lua_GetAll (Urho3D::String typeName);
     /// \brief version of StateObjectsHub::RemoveAll for Lua, because Lua don't support Urho3D::SharedPtr's.
     void Lua_RemoveAll (Urho3D::String typeName, bool dontDelete = false);
 };

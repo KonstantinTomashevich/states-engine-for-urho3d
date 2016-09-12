@@ -48,6 +48,7 @@ function TestStatesEngine ()
     local testObject1 = StatesEngine.LuaStateObject:new (context)
     testObject1:CreateObject ("_G.TestObject", "\"Hello, world!\"")
     GetStatesEngine ():GetState ():Add (testObject1)
+    GetStatesEngine ():GetState ():Init ()
     
     if _G.StatesEngineUtils.LuaStateObjects [testObject1:GetObjectName ()].parent_ ~= GetStatesEngine ():GetState () then
         Log:Write (LOG_INFO, "FAILED: Object's parent isn't equal to GetStatesEngine ():GetState ()!")

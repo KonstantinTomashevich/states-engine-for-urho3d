@@ -79,17 +79,17 @@ StateObject *StateObjectsManager::Lua_Create (Urho3D::String typeName)
     return created.Get ();
 }
 
-Urho3D::Vector <StateObject *> StateObjectsManager::Lua_GetAll (Urho3D::String typeName)
+Urho3D::PODVector <StateObject *> &StateObjectsManager::Lua_GetAll (Urho3D::String typeName)
 {
-    Urho3D::Vector <StateObject *> pointers;
+    temporaryPodVector_.Clear ();
     Urho3D::Vector <Urho3D::SharedPtr <StateObject> > sharedPointers = GetAll (typeName);
 
     if (sharedPointers.Empty ())
-        return pointers;
+        return temporaryPodVector_;
 
     for (int index = 0; index < sharedPointers.Size (); index++)
-        pointers.Push (sharedPointers.At (index).Get ());
-    return pointers;
+        temporaryPodVector_.Push (sharedPointers.At (index).Get ());
+    return temporaryPodVector_;
 }
 
 void StateObjectsManager::Lua_RemoveAll(Urho3D::String typeName, bool dontDelete)
