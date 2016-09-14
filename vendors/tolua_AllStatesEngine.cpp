@@ -48,6 +48,8 @@ using namespace Urho3D;
 using namespace StatesEngine;
 using namespace Urho3D;
 using namespace Urho3D;
+using namespace StatesEngine::Events;
+using namespace StatesEngine::Events::StateObjectAddedToHub;
 
 /* function to release collected object via destructor */
 #ifdef __cplusplus
@@ -2592,6 +2594,60 @@ static int tolua_AllStatesEngine_StatesEngine_StatesEngineSubsystem_delete00(lua
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* get function: E_STATE_OBJECT_ADDED_TO_HUB */
+#ifndef TOLUA_DISABLE_tolua_get_Events_E_STATE_OBJECT_ADDED_TO_HUB
+static int tolua_get_Events_E_STATE_OBJECT_ADDED_TO_HUB(lua_State* tolua_S)
+{
+  tolua_pushusertype(tolua_S,(void*)&E_STATE_OBJECT_ADDED_TO_HUB,"StringHash");
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: P_STATE_OBJECT */
+#ifndef TOLUA_DISABLE_tolua_get_StateObjectAddedToHub_P_STATE_OBJECT
+static int tolua_get_StateObjectAddedToHub_P_STATE_OBJECT(lua_State* tolua_S)
+{
+  tolua_pushusertype(tolua_S,(void*)&P_STATE_OBJECT,"StringHash");
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: P_HUB */
+#ifndef TOLUA_DISABLE_tolua_get_StateObjectAddedToHub_P_HUB
+static int tolua_get_StateObjectAddedToHub_P_HUB(lua_State* tolua_S)
+{
+  tolua_pushusertype(tolua_S,(void*)&P_HUB,"StringHash");
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: E_STATE_OBJECT_REMOVED_FROM_HUB */
+#ifndef TOLUA_DISABLE_tolua_get_Events_E_STATE_OBJECT_REMOVED_FROM_HUB
+static int tolua_get_Events_E_STATE_OBJECT_REMOVED_FROM_HUB(lua_State* tolua_S)
+{
+  tolua_pushusertype(tolua_S,(void*)&E_STATE_OBJECT_REMOVED_FROM_HUB,"StringHash");
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: P_STATE_OBJECT */
+#ifndef TOLUA_DISABLE_tolua_get_StateObjectRemovedFromHub_P_STATE_OBJECT
+static int tolua_get_StateObjectRemovedFromHub_P_STATE_OBJECT(lua_State* tolua_S)
+{
+  tolua_pushusertype(tolua_S,(void*)&P_STATE_OBJECT,"StringHash");
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: P_HUB */
+#ifndef TOLUA_DISABLE_tolua_get_StateObjectRemovedFromHub_P_HUB
+static int tolua_get_StateObjectRemovedFromHub_P_HUB(lua_State* tolua_S)
+{
+  tolua_pushusertype(tolua_S,(void*)&P_HUB,"StringHash");
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* Open function */
 TOLUA_API int tolua_AllStatesEngine_open (lua_State* tolua_S)
 {
@@ -2732,8 +2788,20 @@ TOLUA_API int tolua_AllStatesEngine_open (lua_State* tolua_S)
  tolua_endmodule(tolua_S);
  tolua_module(tolua_S,"StatesEngine",0);
  tolua_beginmodule(tolua_S,"StatesEngine");
-  tolua_module(tolua_S,"Events",0);
+  tolua_module(tolua_S,"Events",1);
   tolua_beginmodule(tolua_S,"Events");
+   tolua_variable(tolua_S,"E_STATE_OBJECT_ADDED_TO_HUB",tolua_get_Events_E_STATE_OBJECT_ADDED_TO_HUB,NULL);
+   tolua_module(tolua_S,"StateObjectAddedToHub",1);
+   tolua_beginmodule(tolua_S,"StateObjectAddedToHub");
+    tolua_variable(tolua_S,"P_STATE_OBJECT",tolua_get_StateObjectAddedToHub_P_STATE_OBJECT,NULL);
+    tolua_variable(tolua_S,"P_HUB",tolua_get_StateObjectAddedToHub_P_HUB,NULL);
+   tolua_endmodule(tolua_S);
+   tolua_variable(tolua_S,"E_STATE_OBJECT_REMOVED_FROM_HUB",tolua_get_Events_E_STATE_OBJECT_REMOVED_FROM_HUB,NULL);
+   tolua_module(tolua_S,"StateObjectRemovedFromHub",1);
+   tolua_beginmodule(tolua_S,"StateObjectRemovedFromHub");
+    tolua_variable(tolua_S,"P_STATE_OBJECT",tolua_get_StateObjectRemovedFromHub_P_STATE_OBJECT,NULL);
+    tolua_variable(tolua_S,"P_HUB",tolua_get_StateObjectRemovedFromHub_P_HUB,NULL);
+   tolua_endmodule(tolua_S);
   tolua_endmodule(tolua_S);
  tolua_endmodule(tolua_S);
  tolua_endmodule(tolua_S);

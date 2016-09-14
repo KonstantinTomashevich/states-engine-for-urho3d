@@ -1,7 +1,22 @@
 $using namespace Urho3D;
+$using namespace StatesEngine::Events;
+$using namespace StatesEngine::Events::StateObjectAddedToHub;
 module StatesEngine
 {
 module Events
 {
+extern tolua_readonly StringHash E_STATE_OBJECT_ADDED_TO_HUB;
+module StateObjectAddedToHub
+{
+extern tolua_readonly StringHash P_STATE_OBJECT;
+extern tolua_readonly StringHash P_HUB;
+}
+
+extern tolua_readonly StringHash E_STATE_OBJECT_REMOVED_FROM_HUB;
+module StateObjectRemovedFromHub
+{
+extern tolua_readonly StringHash P_STATE_OBJECT;
+extern tolua_readonly StringHash P_HUB;
+}
 }
 }

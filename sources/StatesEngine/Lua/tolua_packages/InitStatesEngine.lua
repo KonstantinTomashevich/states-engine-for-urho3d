@@ -47,18 +47,6 @@ function GetStatesEngine ()
     return StatesEngine.StatesEngineSubsystem:GetInstance ()
 end
 
---- Add variables for easier using of StatesEngine events.
-_G.StatesEngineUtils.Events = {}
-_G.StatesEngineUtils.Events.E_STATE_OBJECT_ADDED_TO_HUB = "StateObjectAddedToHub"
-_G.StatesEngineUtils.Events.OnStateStateObjectAddedToHub = {}
-_G.StatesEngineUtils.Events.OnStateStateObjectAddedToHub.P_STATE_OBJECT = "StateObject"
-_G.StatesEngineUtils.Events.OnStateStateObjectAddedToHub.P_HUB = "Hub"
-
-_G.StatesEngineUtils.Events.E_STATE_OBJECT_REMOVED_FROM_HUB = "StateObjectRemovedFromHub"
-_G.StatesEngineUtils.Events.OnStateStateObjectRemovedFromHub = {}
-_G.StatesEngineUtils.Events.OnStateStateObjectRemovedFromHub.P_STATE_OBJECT = "StateObject"
-_G.StatesEngineUtils.Events.OnStateStateObjectRemovedFromHub.P_HUB = "Hub"
-
 --- Create table for lua state objects instances.
 _G.StatesEngineUtils.LuaStateObjects = {}
 
